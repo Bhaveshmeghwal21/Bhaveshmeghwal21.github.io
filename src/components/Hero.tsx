@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { FiChevronDown, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi'
-import { fadeInUp, slideInLeft, slideInRight, floatingAnimation } from '@/utils/animations'
+import { fadeInUp, slideInLeft, slideInRight } from '@/utils/animations'
 import { personalInfo } from '@/utils/constants'
+import DroneAnimation from './DroneAnimation'
 
 /**
  * Hero Section Component
@@ -20,8 +21,6 @@ import { personalInfo } from '@/utils/constants'
  */
 
 const Hero = () => {
-  const techBadges = ['PX4', 'ROS', 'Python', 'C++', 'ArduPilot', 'Gazebo']
-
   const scrollToAbout = () => {
     const aboutSection = document.getElementById('about')
     aboutSection?.scrollIntoView({ behavior: 'smooth' })
@@ -169,47 +168,15 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - Visual Element */}
+          {/* Right Column - Drone Animation */}
           <motion.div
             initial="hidden"
             animate="visible"
             variants={slideInRight}
             transition={{ delay: 0.4 }}
-            className="relative hidden lg:block"
+            className="relative hidden lg:block h-[500px]"
           >
-            {/* Floating Tech Stack Badges */}
-            <div className="relative w-full h-96">
-              {techBadges.map((tech, index) => (
-                <motion.div
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1,
-                    y: [0, -20, 0],
-                  }}
-                  transition={{ 
-                    delay: 1 + index * 0.1,
-                    y: {
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: `${(index % 3) * 33}%`,
-                    left: `${(index % 2) * 50}%`,
-                  }}
-                  className="px-6 py-3 bg-gradient-to-r from-accent to-accent-light rounded-lg shadow-glow"
-                >
-                  <span className="text-white font-semibold">{tech}</span>
-                </motion.div>
-              ))}
-
-              {/* Central Glow Effect */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-highlight/20 rounded-full blur-3xl animate-pulse-slow" />
-            </div>
+            <DroneAnimation />
           </motion.div>
         </div>
       </div>
