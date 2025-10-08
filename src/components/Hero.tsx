@@ -183,9 +183,19 @@ const Hero = () => {
                 <motion.div
                   key={tech}
                   initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                  {...floatingAnimation}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    y: [0, -20, 0],
+                  }}
+                  transition={{ 
+                    delay: 1 + index * 0.1,
+                    y: {
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }
+                  }}
                   style={{
                     position: 'absolute',
                     top: `${(index % 3) * 33}%`,
