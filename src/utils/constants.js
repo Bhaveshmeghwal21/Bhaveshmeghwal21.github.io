@@ -14,6 +14,22 @@ export const personalInfo = {
   resumeRobotics: "https://drive.google.com/file/d/1DEYtS6IBMPIo-GRl5vmc44XYJhlwiHR-/view?usp=sharing",
 };
 
+// Rotating roles shown in the hero headline
+export const roles = [
+  "Aerial Robotics Engineer",
+  "PX4 / ArduPilot Developer",
+  "Autonomous Systems Builder",
+  "Machine Learning Engineer",
+  "Computer Vision Tinkerer",
+];
+
+// Compact "mission status" chips for the hero
+export const heroHighlights = [
+  { label: "Inter IIT 13.0", value: "Top 10 / 23 IITs" },
+  { label: "Club", value: "Aero Modelling Secretary" },
+  { label: "Focus", value: "Fault-Tolerant Control" },
+];
+
 export const stats = [
   { label: "Projects Completed", value: "15+" },
   { label: "Technical Skills", value: "20+" },

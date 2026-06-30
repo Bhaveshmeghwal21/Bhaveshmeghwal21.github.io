@@ -7,15 +7,21 @@ import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi'
 import { useTheme } from '@/contexts/ThemeContext'
 
 /**
- * Navbar Component
- * 
- * Features:
- * - Sticky navigation with blur effect
- * - Mobile responsive hamburger menu
- * - Smooth scroll to sections
- * - Dark/Light theme toggle with persistence
- * - Active section highlighting based on scroll position
+ * Navbar
+ *
+ * - Floating glass pill that condenses once scrolled
+ * - Animated active-section indicator (shared layoutId)
+ * - Mobile slide-down sheet
+ * - Theme toggle with crossfade icon
  */
+
+const navItems = [
+  { name: 'About', href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Contact', href: '#contact' },
+]
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -24,44 +30,28 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, toggleTheme } = useTheme()
 
-  // Ensure component is mounted before using theme
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact', href: '#contact' },
-  ]
-
-  // Handle scroll events for navbar styling and active section
   useEffect(() => {
     const handleScroll = () => {
-      // Add blur effect when scrolled
-      setScrolled(window.scrollY > 50)
-
-      // Determine active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1))
-      const current = sections.find(section => {
+      setScrolled(window.scrollY > 40)
+      const sections = navItems.map((item) => item.href.substring(1))
+      const current = sections.find((section) => {
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
+          return rect.top <= 120 && rect.bottom >= 120
         }
         return false
       })
-      
       if (current) setActiveSection(current)
     }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Smooth scroll to section
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
@@ -75,122 +65,95 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-primary/90 backdrop-blur-md shadow-lg' 
-          : 'bg-transparent'
-      }`}
+      className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex-shrink-0"
-          >
-            <Link 
-              href="/"
-              className="text-2xl md:text-3xl font-bold font-display"
-            >
-              <span className="text-highlight">BM</span>
-              <span className="text-gray-300">.dev</span>
-            </Link>
-          </motion.div>
+      <div
+        className={`nav-glass flex w-full max-w-5xl items-center justify-between rounded-2xl px-4 transition-all duration-300 md:px-6 ${
+          scrolled
+            ? 'glass py-2.5 shadow-lg'
+            : 'border border-transparent bg-transparent py-3.5'
+        }`}
+      >
+        {/* Logo */}
+        <Link href="/" className="group flex items-center gap-2 font-display text-xl font-bold">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-aero-gradient text-sm font-bold text-[#04121a]">
+            BM
+          </span>
+          <span className="hidden text-white sm:inline">
+            Bhavesh<span className="gradient-text">.</span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.button
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-1 md:flex">
+          {navItems.map((item) => {
+            const active = activeSection === item.href.substring(1)
+            return (
+              <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative text-sm lg:text-base font-medium transition-colors duration-300 ${
-                  activeSection === item.href.substring(1)
-                    ? 'text-highlight'
-                    : 'text-gray-300 hover:text-highlight'
+                className={`relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors ${
+                  active ? 'text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
-                {item.name}
-                {activeSection === item.href.substring(1) && (
-                  <motion.div
-                    layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-highlight"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                {active && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 -z-10 rounded-lg border border-neon-cyan/30 bg-neon-cyan/10"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
-              </motion.button>
-            ))}
+                {item.name}
+              </button>
+            )
+          })}
+        </div>
 
-            {/* Theme Toggle - Desktop */}
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-accent/20 text-highlight hover:bg-accent/30 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {mounted && theme === 'dark' ? <FiMoon size={20} /> : <FiSun size={20} />}
-            </motion.button>
-          </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/[0.03] text-neon-cyan transition-colors hover:border-neon-cyan/40"
+          >
+            {mounted && theme === 'dark' ? <FiMoon size={17} /> : <FiSun size={17} />}
+          </button>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center space-x-4 md:hidden">
-            {/* Theme Toggle - Mobile */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-accent/20 text-highlight"
-              aria-label="Toggle theme"
-            >
-              {mounted && theme === 'dark' ? <FiMoon size={18} /> : <FiSun size={18} />}
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg bg-accent/20 text-highlight"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-            </motion.button>
-          </div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/[0.03] text-white md:hidden"
+          >
+            {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-primary/95 backdrop-blur-lg border-t border-accent/20"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="glass absolute left-4 right-4 top-[72px] rounded-2xl p-3 md:hidden"
           >
-            <div className="px-4 py-6 space-y-4">
-              {navItems.map((item, index) => (
-                <motion.button
-                  key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => scrollToSection(item.href)}
-                  className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all ${
-                    activeSection === item.href.substring(1)
-                      ? 'bg-highlight text-white'
-                      : 'text-gray-300 hover:bg-accent/20 hover:text-highlight'
-                  }`}
-                >
-                  {item.name}
-                </motion.button>
-              ))}
-            </div>
+            {navItems.map((item, index) => (
+              <motion.button
+                key={item.name}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.06 }}
+                onClick={() => scrollToSection(item.href)}
+                className={`block w-full rounded-xl px-4 py-3 text-left text-base font-medium transition-all ${
+                  activeSection === item.href.substring(1)
+                    ? 'bg-neon-cyan/10 text-neon-cyan'
+                    : 'text-gray-300 hover:bg-white/5'
+                }`}
+              >
+                {item.name}
+              </motion.button>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>

@@ -8,22 +8,29 @@ import Experience from '@/components/Experience'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import ParticleBackground from '@/components/ParticleBackground'
+import ScrollProgress from '@/components/ui/ScrollProgress'
+import Cursor from '@/components/ui/Cursor'
+import BackToTop from '@/components/ui/BackToTop'
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Bhavesh Meghwal - Aerial Robotics Engineer | PX4 Developer</title>
+        <title>Bhavesh Meghwal — Aerial Robotics Engineer | PX4 Developer</title>
       </Head>
 
-      {/* Particle Background - Fixed position */}
+      {/* Global interaction layers */}
+      <ScrollProgress />
+      <Cursor />
+      <BackToTop />
+
+      {/* Particle Background - fixed behind content */}
       <ParticleBackground />
 
       {/* Main Content */}
       <div className="relative z-10">
-        {/* Navbar is now wrapped by ThemeProvider in _app.tsx */}
         <Navbar />
-        
+
         <main>
           <Hero />
           <About />

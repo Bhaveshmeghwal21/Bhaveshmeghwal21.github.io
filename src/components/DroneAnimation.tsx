@@ -44,9 +44,9 @@ const DroneAnimation = () => {
         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#e94560" stopOpacity="0" />
-            <stop offset="50%" stopColor="#e94560" stopOpacity="1" />
-            <stop offset="100%" stopColor="#e94560" stopOpacity="0" />
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0" />
+            <stop offset="50%" stopColor="#22d3ee" stopOpacity="1" />
+            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
@@ -95,35 +95,35 @@ const DroneAnimation = () => {
               height="30"
               rx="4"
               fill="#1a1a2e"
-              stroke="#e94560"
+              stroke="#22d3ee"
               strokeWidth="2"
             />
             
             {/* Center Camera */}
-            <circle cx="100" cy="100" r="8" fill="#0f3460" stroke="#e94560" strokeWidth="1.5" />
-            <circle cx="100" cy="100" r="4" fill="#e94560" opacity="0.8">
+            <circle cx="100" cy="100" r="8" fill="#6366f1" stroke="#22d3ee" strokeWidth="1.5" />
+            <circle cx="100" cy="100" r="4" fill="#22d3ee" opacity="0.8">
               <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
             </circle>
 
             {/* Arms */}
             {/* Top-Left Arm */}
-            <line x1="100" y1="100" x2="50" y2="50" stroke="#0f3460" strokeWidth="4" strokeLinecap="round" />
+            <line x1="100" y1="100" x2="50" y2="50" stroke="#6366f1" strokeWidth="4" strokeLinecap="round" />
             {/* Top-Right Arm */}
-            <line x1="100" y1="100" x2="150" y2="50" stroke="#0f3460" strokeWidth="4" strokeLinecap="round" />
+            <line x1="100" y1="100" x2="150" y2="50" stroke="#6366f1" strokeWidth="4" strokeLinecap="round" />
             {/* Bottom-Left Arm */}
-            <line x1="100" y1="100" x2="50" y2="150" stroke="#0f3460" strokeWidth="4" strokeLinecap="round" />
+            <line x1="100" y1="100" x2="50" y2="150" stroke="#6366f1" strokeWidth="4" strokeLinecap="round" />
             {/* Bottom-Right Arm */}
-            <line x1="100" y1="100" x2="150" y2="150" stroke="#0f3460" strokeWidth="4" strokeLinecap="round" />
+            <line x1="100" y1="100" x2="150" y2="150" stroke="#6366f1" strokeWidth="4" strokeLinecap="round" />
 
             {/* Motors */}
             {/* Top-Left Motor */}
-            <circle cx="50" cy="50" r="12" fill="#1a1a2e" stroke="#e94560" strokeWidth="2" />
+            <circle cx="50" cy="50" r="12" fill="#1a1a2e" stroke="#22d3ee" strokeWidth="2" />
             {/* Top-Right Motor */}
-            <circle cx="150" cy="50" r="12" fill="#1a1a2e" stroke="#e94560" strokeWidth="2" />
+            <circle cx="150" cy="50" r="12" fill="#1a1a2e" stroke="#22d3ee" strokeWidth="2" />
             {/* Bottom-Left Motor */}
-            <circle cx="50" cy="150" r="12" fill="#1a1a2e" stroke="#e94560" strokeWidth="2" />
+            <circle cx="50" cy="150" r="12" fill="#1a1a2e" stroke="#22d3ee" strokeWidth="2" />
             {/* Bottom-Right Motor */}
-            <circle cx="150" cy="150" r="12" fill="#1a1a2e" stroke="#e94560" strokeWidth="2" />
+            <circle cx="150" cy="150" r="12" fill="#1a1a2e" stroke="#22d3ee" strokeWidth="2" />
 
             {/* Propellers - Top-Left (Counter-clockwise) */}
             <g>
@@ -132,8 +132,8 @@ const DroneAnimation = () => {
                 transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                 style={{ originX: "50px", originY: "50px" }}
               >
-                <ellipse cx="50" cy="40" rx="15" ry="4" fill="#e94560" opacity="0.6" />
-                <ellipse cx="50" cy="60" rx="15" ry="4" fill="#e94560" opacity="0.6" />
+                <ellipse cx="50" cy="40" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
+                <ellipse cx="50" cy="60" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
               </motion.g>
             </g>
 
@@ -144,8 +144,8 @@ const DroneAnimation = () => {
                 transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                 style={{ originX: "150px", originY: "50px" }}
               >
-                <ellipse cx="150" cy="40" rx="15" ry="4" fill="#e94560" opacity="0.6" />
-                <ellipse cx="150" cy="60" rx="15" ry="4" fill="#e94560" opacity="0.6" />
+                <ellipse cx="150" cy="40" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
+                <ellipse cx="150" cy="60" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
               </motion.g>
             </g>
 
@@ -156,8 +156,8 @@ const DroneAnimation = () => {
                 transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                 style={{ originX: "50px", originY: "150px" }}
               >
-                <ellipse cx="50" cy="140" rx="15" ry="4" fill="#e94560" opacity="0.6" />
-                <ellipse cx="50" cy="160" rx="15" ry="4" fill="#e94560" opacity="0.6" />
+                <ellipse cx="50" cy="140" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
+                <ellipse cx="50" cy="160" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
               </motion.g>
             </g>
 
@@ -168,8 +168,8 @@ const DroneAnimation = () => {
                 transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
                 style={{ originX: "150px", originY: "150px" }}
               >
-                <ellipse cx="150" cy="140" rx="15" ry="4" fill="#e94560" opacity="0.6" />
-                <ellipse cx="150" cy="160" rx="15" ry="4" fill="#e94560" opacity="0.6" />
+                <ellipse cx="150" cy="140" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
+                <ellipse cx="150" cy="160" rx="15" ry="4" fill="#22d3ee" opacity="0.6" />
               </motion.g>
             </g>
 
@@ -184,19 +184,19 @@ const DroneAnimation = () => {
             </circle>
 
             {/* Glow Effects */}
-            <circle cx="50" cy="50" r="20" fill="#e94560" opacity="0.1">
+            <circle cx="50" cy="50" r="20" fill="#22d3ee" opacity="0.1">
               <animate attributeName="r" values="20;25;20" dur="1.5s" repeatCount="indefinite" />
               <animate attributeName="opacity" values="0.1;0.2;0.1" dur="1.5s" repeatCount="indefinite" />
             </circle>
-            <circle cx="150" cy="50" r="20" fill="#e94560" opacity="0.1">
+            <circle cx="150" cy="50" r="20" fill="#22d3ee" opacity="0.1">
               <animate attributeName="r" values="20;25;20" dur="1.5s" repeatCount="indefinite" begin="0.4s" />
               <animate attributeName="opacity" values="0.1;0.2;0.1" dur="1.5s" repeatCount="indefinite" begin="0.4s" />
             </circle>
-            <circle cx="50" cy="150" r="20" fill="#e94560" opacity="0.1">
+            <circle cx="50" cy="150" r="20" fill="#22d3ee" opacity="0.1">
               <animate attributeName="r" values="20;25;20" dur="1.5s" repeatCount="indefinite" begin="0.8s" />
               <animate attributeName="opacity" values="0.1;0.2;0.1" dur="1.5s" repeatCount="indefinite" begin="0.8s" />
             </circle>
-            <circle cx="150" cy="150" r="20" fill="#e94560" opacity="0.1">
+            <circle cx="150" cy="150" r="20" fill="#22d3ee" opacity="0.1">
               <animate attributeName="r" values="20;25;20" dur="1.5s" repeatCount="indefinite" begin="1.2s" />
               <animate attributeName="opacity" values="0.1;0.2;0.1" dur="1.5s" repeatCount="indefinite" begin="1.2s" />
             </circle>

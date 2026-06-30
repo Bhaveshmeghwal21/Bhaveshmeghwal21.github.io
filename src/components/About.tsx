@@ -1,218 +1,172 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
-import { FiDownload, FiAward, FiUsers, FiTrendingUp } from 'react-icons/fi'
-import { fadeInUp, slideInLeft, slideInRight, staggerContainer } from '@/utils/animations'
-import { personalInfo, stats } from '@/utils/constants'
+import {
+  FiDownload,
+  FiMapPin,
+  FiAward,
+  FiCpu,
+  FiZap,
+  FiArrowUpRight,
+} from 'react-icons/fi'
+import { personalInfo } from '@/utils/constants'
+import SectionHeading from './ui/SectionHeading'
 
 /**
- * About Section Component
- * 
- * Features:
- * - Professional bio with key highlights
- * - Stats cards showing achievements
- * - Resume download buttons (robotics-focused and general)
- * - Responsive grid layout
- * - Scroll-triggered animations using Intersection Observer
- * 
- * Structure:
- * - Section title
- * - Bio text with highlighted achievements
- * - Stats grid (4 cards)
- * - Resume download buttons
+ * About Section — a bento-grid layout mixing a profile tile, narrative bio,
+ * focus areas, education, and a highlights list. Each tile is a glass panel
+ * that lifts on hover.
  */
 
+const focusAreas = [
+  'PX4-Autopilot firmware & fault-tolerant control',
+  'ROS1/ROS2 with MAVROS sensor integration',
+  'Computer Vision (OpenCV, MediaPipe)',
+  'CFD analysis with ANSYS FLUENT',
+  'Swarm systems with Skybrush',
+  'Vision-Language mission planning',
+]
+
+const tile = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0 },
+}
+
 const About = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
-
-  const statIcons = [FiTrendingUp, FiAward, FiUsers, FiAward]
-
   return (
-    <section id="about" className="section-container bg-gradient-to-b from-dark-bg to-primary">
+    <section id="about" className="section-container">
+      <SectionHeading
+        eyebrow="01 — Who I Am"
+        title={
+          <>
+            Engineering <span className="gradient-text">autonomy</span> into the skies
+          </>
+        }
+        subtitle="A hands-on roboticist turning control theory and machine learning into drones that fly themselves."
+      />
+
       <motion.div
-        ref={ref}
         initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-        variants={staggerContainer}
-        className="space-y-16"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ staggerChildren: 0.1 }}
+        className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4 auto-rows-[minmax(0,1fr)]"
       >
-        {/* Section Title */}
-        <motion.div variants={fadeInUp} className="text-center">
-          <h2 className="section-title">About Me</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-highlight to-highlight-light mx-auto rounded-full" />
+        {/* Profile tile */}
+        <motion.div
+          variants={tile}
+          className="glass glass-hover relative overflow-hidden rounded-2xl p-6 md:col-span-1 md:row-span-2 flex flex-col items-center justify-center text-center"
+        >
+          <div className="absolute inset-0 bg-radial-fade opacity-60" />
+          <div className="relative">
+            <div className="absolute -inset-3 rounded-full bg-aero-gradient opacity-30 blur-2xl" />
+            <div className="relative h-40 w-40 overflow-hidden rounded-full border-2 border-neon-cyan/40 shadow-glow">
+              <Image
+                src="/images/profile.jpeg"
+                alt="Bhavesh Meghwal"
+                fill
+                className="object-cover"
+                sizes="160px"
+                priority
+              />
+            </div>
+            <span className="absolute -bottom-1 -right-1 grid h-11 w-11 place-items-center rounded-full border-4 border-dark-card bg-aero-gradient text-lg">
+              🚁
+            </span>
+          </div>
+          <h3 className="relative mt-5 font-display text-xl font-bold text-white">
+            {personalInfo.name}
+          </h3>
+          <p className="relative mt-1 text-sm text-neon-cyan">Aerial Robotics Engineer</p>
+          <div className="relative mt-3 flex items-center gap-1.5 text-xs text-gray-400">
+            <FiMapPin size={12} /> IIT (BHU) Varanasi
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Profile Image */}
-          <motion.div variants={slideInLeft} className="flex justify-center lg:justify-start">
-            <div className="relative">
-              {/* Glow effect */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-highlight to-highlight-light rounded-full blur-2xl opacity-20 animate-pulse-slow" />
-              
-              {/* Profile Image */}
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-highlight shadow-glow">
-                <Image
-                  src="/images/profile.jpeg"
-                  alt="Bhavesh Meghwal - Aerial Robotics Engineer"
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 256px, 320px"
-                />
-              </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -bottom-2 -right-2 w-20 h-20 bg-highlight rounded-full flex items-center justify-center border-4 border-primary">
-                <span className="text-2xl">🚁</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Column - Bio */}
-          <motion.div variants={slideInRight} className="space-y-6">
-            <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
-              <p>
-                I'm a <span className="text-highlight font-semibold">Mechanical Engineering</span> student 
-                at <span className="text-highlight font-semibold">IIT (BHU) Varanasi</span>, graduating in 2026. 
-                My passion lies in <span className="text-highlight font-semibold">aerial robotics</span> and 
-                <span className="text-highlight font-semibold"> autonomous systems</span>, where I combine 
-                theoretical knowledge with hands-on implementation.
-              </p>
-
-              <p>
-                As <span className="text-highlight font-semibold">Secretary of the Aero Modelling Club</span>, 
-                I've led a team of 20-30 members and achieved a <span className="text-highlight font-semibold">
-                70% increase in club involvement</span>. My leadership extends beyond management—I actively 
-                mentor students and organize technical workshops on drone technology, OpenCV, and simulation tools.
-              </p>
-
-              <p>
-                My technical expertise was validated at <span className="text-highlight font-semibold">
-                Inter IIT Tech Meet 13.0</span>, where our team secured a <span className="text-highlight font-semibold">
-                Top 10 national rank</span> in Aerial Robotics among 23 IITs. This achievement stemmed from 
-                implementing a sophisticated fault-tolerant control algorithm in PX4 for quadrotors experiencing 
-                motor failure.
-              </p>
-
-              <div className="pt-4">
-                <h3 className="text-xl font-semibold text-white mb-3">Key Highlights:</h3>
-                <ul className="space-y-2">
-                  {[
-                    'PX4-Autopilot firmware modification & FTC implementation',
-                    'ROS1/ROS2 expertise with MAVROS integration',
-                    'Computer Vision with OpenCV & MediaPipe',
-                    'CFD Analysis using ANSYS FLUENT',
-                    'Swarm drone systems with Skybrush',
-                    'UAV internship at PAWAAC Drones'
-                  ].map((item, index) => (
-                    <motion.li
-                      key={index}
-                      variants={fadeInUp}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-3"
-                    >
-                      <span className="text-highlight text-xl">▹</span>
-                      <span>{item}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Resume Download Buttons */}
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-wrap gap-4 pt-6"
+        {/* Bio tile */}
+        <motion.div
+          variants={tile}
+          className="glass glass-hover rounded-2xl p-7 md:col-span-2 lg:col-span-3"
+        >
+          <p className="text-lg leading-relaxed text-gray-300">
+            I&apos;m a final-year <span className="text-white font-medium">Mechanical Engineering</span>{' '}
+            student at IIT (BHU) Varanasi, deeply focused on{' '}
+            <span className="text-neon-cyan font-medium">aerial robotics</span> and autonomous
+            systems. As <span className="text-white font-medium">Secretary of the Aero Modelling Club</span>,
+            I led a 20–30 member team and drove a{' '}
+            <span className="text-neon-cyan font-medium">70% increase</span> in engagement.
+          </p>
+          <p className="mt-4 leading-relaxed text-gray-400">
+            At Inter IIT Tech Meet 13.0, our team secured a{' '}
+            <span className="text-white font-medium">Top 10 national rank</span> among 23 IITs by
+            implementing a fault-tolerant control algorithm in PX4 that recovers a quadrotor from
+            in-flight motor failure.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href={personalInfo.resumeRobotics}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-sm"
             >
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href={personalInfo.resumeRobotics}
-                download
-                className="btn-primary inline-flex items-center gap-2"
-              >
-                <FiDownload />
-                Robotics Resume
-              </motion.a>
-
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href={personalInfo.resume}
-                download
-                className="btn-secondary inline-flex items-center gap-2"
-              >
-                <FiDownload />
-                General Resume
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Stats Cards - Below Bio and Image */}
-        <motion.div
-          variants={fadeInUp}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16"
-        >
-          {stats.map((stat, index) => {
-              const Icon = statIcons[index]
-              return (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-highlight to-highlight-light opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-300" />
-                  
-                  <div className="relative bg-dark-card p-6 rounded-xl border border-accent/20 hover:border-highlight/50 transition-all duration-300 h-full">
-                    <Icon className="text-highlight text-3xl mb-4" />
-                    
-                    <div className="text-4xl font-bold text-white mb-2 font-display">
-                      {stat.value}
-                    </div>
-                    
-                    <div className="text-gray-400 text-sm">
-                      {stat.label}
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
+              <FiDownload /> Robotics Resume
+            </a>
+            <a
+              href={personalInfo.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary text-sm"
+            >
+              <FiDownload /> General Resume
+            </a>
+          </div>
         </motion.div>
 
-        {/* Education & Current Focus */}
+        {/* Focus areas tile */}
         <motion.div
-          variants={fadeInUp}
-          className="bg-dark-card border border-accent/20 rounded-xl p-8 space-y-6"
+          variants={tile}
+          className="glass glass-hover rounded-2xl p-7 md:col-span-2 lg:col-span-2"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-highlight font-semibold text-lg mb-2">Education</h3>
-              <p className="text-gray-300">B.Tech Mechanical Engineering</p>
-              <p className="text-gray-400 text-sm">IIT (BHU) Varanasi</p>
-              <p className="text-gray-400 text-sm">Graduating 2026</p>
-            </div>
+          <div className="mb-4 flex items-center gap-2 text-neon-cyan">
+            <FiZap />
+            <h4 className="font-display text-lg font-semibold text-white">What I work on</h4>
+          </div>
+          <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            {focusAreas.map((item) => (
+              <li key={item} className="flex items-start gap-2 text-sm text-gray-300">
+                <FiArrowUpRight className="mt-0.5 shrink-0 text-neon-violet" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
 
-            <div>
-              <h3 className="text-highlight font-semibold text-lg mb-2">Current Focus</h3>
-              <p className="text-gray-300">Fault-Tolerant Control</p>
-              <p className="text-gray-400 text-sm">Vision-Language Models</p>
-              <p className="text-gray-400 text-sm">Autonomous Navigation</p>
-            </div>
+        {/* Education tile */}
+        <motion.div variants={tile} className="glass glass-hover rounded-2xl p-7">
+          <div className="mb-3 flex items-center gap-2 text-neon-cyan">
+            <FiAward />
+            <h4 className="font-display text-lg font-semibold text-white">Education</h4>
+          </div>
+          <p className="font-medium text-gray-200">B.Tech, Mechanical Engineering</p>
+          <p className="mt-1 text-sm text-gray-400">IIT (BHU) Varanasi</p>
+          <p className="mt-1 text-sm text-gray-400">Graduating 2026</p>
+        </motion.div>
 
-            <div>
-              <h3 className="text-highlight font-semibold text-lg mb-2">Location</h3>
-              <p className="text-gray-300">{personalInfo.location}</p>
-              <p className="text-gray-400 text-sm">Open to opportunities</p>
-              <p className="text-gray-400 text-sm">Remote & On-site</p>
-            </div>
+        {/* Current focus tile */}
+        <motion.div variants={tile} className="glass glass-hover rounded-2xl p-7">
+          <div className="mb-3 flex items-center gap-2 text-neon-cyan">
+            <FiCpu />
+            <h4 className="font-display text-lg font-semibold text-white">Currently exploring</h4>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {['Fault-Tolerant Control', 'Vision-Language Models', 'Autonomous Nav', 'VTOL'].map(
+              (t) => (
+                <span key={t} className="chip">
+                  {t}
+                </span>
+              )
+            )}
           </div>
         </motion.div>
       </motion.div>

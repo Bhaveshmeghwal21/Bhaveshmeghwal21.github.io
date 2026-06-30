@@ -61,7 +61,7 @@ const ParticleBackground = () => {
 
       draw() {
         if (!ctx) return
-        ctx.fillStyle = 'rgba(233, 69, 96, 0.6)'
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.55)'
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
         ctx.fill()
@@ -78,7 +78,7 @@ const ParticleBackground = () => {
 
     // Animation loop
     const animate = () => {
-      ctx.fillStyle = 'rgba(15, 15, 30, 0.05)'
+      ctx.fillStyle = 'rgba(5, 6, 15, 0.08)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       particles.forEach((particle, i) => {
@@ -92,7 +92,7 @@ const ParticleBackground = () => {
           const distance = Math.sqrt(dx * dx + dy * dy)
 
           if (distance < 150) {
-            ctx.strokeStyle = `rgba(233, 69, 96, ${0.2 * (1 - distance / 150)})`
+            ctx.strokeStyle = `rgba(139, 92, 246, ${0.18 * (1 - distance / 150)})`
             ctx.lineWidth = 1
             ctx.beginPath()
             ctx.moveTo(particle.x, particle.y)
@@ -123,6 +123,7 @@ const ParticleBackground = () => {
         width: '100%',
         height: '100%',
         zIndex: 0,
+        opacity: 0.5,
         pointerEvents: 'none',
       }}
     />
