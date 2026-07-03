@@ -8,7 +8,7 @@ export default function SiteFooter() {
         <div className="max-w-2xl">
           <p className="font-display text-lg text-zinc-100">{site.name}</p>
           <p className="mt-2 leading-7">
-            I build systems that make hard engineering readable, usable, and worth shipping.
+            Built from drone work, AI tools, and product experiments.
           </p>
         </div>
         <div className="flex flex-wrap gap-4">

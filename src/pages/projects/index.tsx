@@ -58,32 +58,30 @@ export default function ProjectsPage() {
             })}
           </Reveal>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          <div className="mt-10 border-t border-white/10">
             {visibleProjects.map((project, index) => (
-              <Reveal key={project.slug} delay={index * 0.03}>
-                <article className="surface h-full p-6">
-                  <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
-                    <span>{project.category}</span>
-                    <span>{project.status}</span>
+              <Reveal key={project.slug} delay={index * 0.03} className="border-b border-white/10 py-6">
+                <article className="grid gap-4 lg:grid-cols-[4rem_minmax(0,1fr)_auto] lg:items-start">
+                  <div className="font-mono text-sm text-zinc-600">
+                    {(index + 1).toString().padStart(2, '0')}
                   </div>
-                  <h2 className="mt-4 font-display text-2xl text-zinc-50">{project.title}</h2>
-                  <p className="mt-3 text-sm leading-7 text-zinc-300">{project.summary}</p>
-                  <p className="mt-4 text-sm leading-7 text-zinc-400">{project.overview}</p>
-
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {project.stack.slice(0, 5).map((item) => (
-                      <span key={item} className="chip">
-                        {item}
-                      </span>
-                    ))}
+                  <div>
+                    <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
+                      <span>{project.category}</span>
+                      <span>{project.timeframe}</span>
+                      <span>{project.status}</span>
+                    </div>
+                    <h2 className="mt-3 font-display text-2xl text-zinc-50">{project.title}</h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-300">{project.summary}</p>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-400">{project.overview}</p>
+                    <p className="mt-3 text-sm text-zinc-500">{project.stack.slice(0, 5).join(' / ')}</p>
                   </div>
-
-                  <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
+                  <div className="flex flex-wrap items-center gap-4 text-sm lg:justify-end">
                     <Link
                       href={`/projects/${project.slug}`}
                       className="inline-flex items-center gap-2 text-sky-300 hover:text-sky-200"
                     >
-                      Open case study
+                      Case study
                       <FiArrowRight />
                     </Link>
                     {project.links.live ? (

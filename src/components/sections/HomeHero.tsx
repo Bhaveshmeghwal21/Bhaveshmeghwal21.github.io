@@ -1,8 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import Image from 'next/image'
 import { FiArrowRight, FiDownload } from 'react-icons/fi'
 import { site } from '@/content/site.mjs'
 import GraphTrace from '@/components/motion/GraphTrace'
@@ -33,10 +33,10 @@ export default function HomeHero() {
 
   return (
     <section ref={rootRef} className="section-container pt-12 md:pt-20">
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(22rem,0.9fr)] lg:items-end">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(18rem,24rem)] lg:items-start">
         <div>
           <div data-hero-item className="eyebrow">
-            Portfolio 2026
+            Bhavesh Meghwal
           </div>
           <h1 data-hero-item className="section-title max-w-5xl">
             {site.role}
@@ -44,12 +44,22 @@ export default function HomeHero() {
           <p data-hero-item className="section-copy max-w-3xl">
             {site.heroIntro}
           </p>
+          <div data-hero-item className="mt-8 space-y-3 border-l border-white/10 pl-4 text-sm text-zinc-300">
+            {site.heroHighlights.map((item) => (
+              <div key={item.label} className="flex flex-wrap gap-2">
+                <span className="font-mono uppercase tracking-[0.14em] text-zinc-500">
+                  {item.label}
+                </span>
+                <span>{item.value}</span>
+              </div>
+            ))}
+          </div>
           <div
             data-hero-item
             className="mt-8 flex flex-wrap items-center gap-3 text-sm text-zinc-300"
           >
             <a href="#work" className="button-primary">
-              View selected work
+              Selected work
               <FiArrowRight />
             </a>
             <a
@@ -58,28 +68,43 @@ export default function HomeHero() {
               rel="noopener noreferrer"
               className="button-secondary"
             >
-              Open resume
+              Resume
               <FiDownload />
             </a>
-          </div>
-          <div data-hero-item className="mt-10 flex flex-wrap gap-3">
-            <span className="chip">Aerial robotics</span>
-            <span className="chip">AI tooling</span>
-            <span className="chip">Product systems</span>
           </div>
         </div>
 
         <div data-hero-item className="space-y-4">
-          <GraphTrace className="h-64 md:h-80" />
-          <div className="grid gap-3 sm:grid-cols-2">
-            {site.stats.map((stat) => (
-              <div key={stat.label} className="surface-muted px-4 py-4">
-                <div className="metric-value">{stat.value}</div>
-                <div className="mt-2 text-sm text-zinc-400">{stat.label}</div>
-              </div>
-            ))}
+          <div className="surface p-3">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[0.95rem]">
+              <Image
+                src={site.profileImage}
+                alt="Bhavesh Meghwal"
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 24rem"
+              />
+            </div>
+            <p className="mt-4 text-sm leading-7 text-zinc-300">
+              Mechanical Engineering at IIT (BHU), building around drones, autonomy,
+              and operator-facing software.
+            </p>
           </div>
+          <GraphTrace className="h-24 border-0 bg-transparent shadow-none" />
         </div>
+      </div>
+
+      <div
+        data-hero-item
+        className="mt-14 grid gap-4 border-t border-white/10 pt-6 md:grid-cols-4"
+      >
+        {site.stats.map((stat) => (
+          <div key={stat.label}>
+            <div className="metric-value">{stat.value}</div>
+            <div className="mt-1 text-sm text-zinc-500">{stat.label}</div>
+          </div>
+        ))}
       </div>
     </section>
   )

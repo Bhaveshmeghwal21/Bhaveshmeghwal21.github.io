@@ -1,4 +1,4 @@
-export const projectFilters = ['All', 'Robotics', 'AI Products', 'Product Systems']
+export const projectFilters = ['All', 'Robotics', 'AI Products', 'Product Systems', 'Machine Learning']
 
 export const projects = [
   {
@@ -9,7 +9,7 @@ export const projects = [
     timeframe: '2024',
     status: 'Competition build',
     summary:
-      'I modified PX4 to recover a quadrotor after a single-motor failure and bring it down under control during Inter IIT Tech Meet 13.0.',
+      'Implemented a fault-tolerant control setup in PX4 for single motor failure recovery during Inter IIT Tech Meet 13.0, with controlled landing and low drift.',
     overview:
       'This project started with a hard competition problem: keep a quadrotor stable after a motor failure, then land it without losing the frame. I worked on the control logic, simulation flow, and recovery behavior inside PX4 and Gazebo.',
     role:
@@ -27,14 +27,14 @@ export const projects = [
     },
   },
   {
-    title: 'AeroVLA',
+    title: 'AeroVLA: AI-Powered UAV Mission Planner',
     slug: 'aerovla',
     featured: true,
     category: 'Robotics',
     timeframe: '2024 to present',
     status: 'Research build',
     summary:
-      'AeroVLA turns natural language into drone mission plans and path suggestions instead of making operators build every route by hand.',
+      'A vision-language system that turns natural-language mission requests into drone flight paths, with faster planning than manual workflows.',
     overview:
       'I built AeroVLA to close the gap between human intent and drone mission setup. The system uses vision-language reasoning and task prompts to generate workable mission paths from plain text commands.',
     role:
@@ -49,6 +49,31 @@ export const projects = [
       live: null,
       repo: null,
       note: 'Project writeup only',
+    },
+  },
+  {
+    title: 'UAV Engineering Internship - PAWAAC Drones',
+    slug: 'pawaac-internship',
+    featured: true,
+    category: 'Robotics',
+    timeframe: '2025',
+    status: 'Internship build',
+    summary:
+      'Worked on delta-wing VTOL surveillance systems, QGroundControl vision model integration, and PX4 control optimization during my PAWAAC Drones internship.',
+    overview:
+      'This work sat close to the airframe and the operator console at the same time. I handled parts of the flight stack, transition tuning, and interface-level work inside QGroundControl for a surveillance platform.',
+    role:
+      'QGroundControl integration, PX4 tuning, GStreamer pipeline work, VTOL transition support',
+    outcomes: [
+      'Integrated vision models into QGroundControl',
+      'Optimized PX4 parameters for VTOL transitions',
+      'Configured DSHOT ESC protocols and real-time video streaming',
+    ],
+    stack: ['Qt/QML', 'C++', 'GStreamer', 'PX4', 'QGroundControl', 'Computer Vision'],
+    links: {
+      live: null,
+      repo: null,
+      note: 'Internship work and case study',
     },
   },
   {
@@ -129,7 +154,7 @@ export const projects = [
   {
     title: 'Palmier Pro for Linux',
     slug: 'palmier-pro-linux',
-    featured: true,
+    featured: false,
     category: 'Product Systems',
     timeframe: '2026',
     status: 'Public repo',
@@ -199,6 +224,30 @@ export const projects = [
     },
   },
   {
+    title: 'CFD Analysis of UAV Propellers',
+    slug: 'cfd-analysis-of-uav-propellers',
+    featured: false,
+    category: 'Robotics',
+    timeframe: '2024',
+    status: 'Simulation study',
+    summary:
+      'Ran ANSYS FLUENT simulations for UAV propeller thrust and torque analysis, then checked the numbers against experimental data.',
+    overview:
+      'I used CFD to understand propeller performance and validate simulation output against real measurements. The work focused on thrust, torque, and the operating range that made sense in practice.',
+    role: 'Simulation setup, validation, and performance analysis',
+    outcomes: [
+      'Kept thrust and torque validation error under 7 percent',
+      'Mapped an optimal RPM range between 1000 and 4000',
+      'Produced performance curves and a technical paper',
+    ],
+    stack: ['ANSYS FLUENT 2022R2', 'K-e turbulence model', 'CFD Meshing'],
+    links: {
+      live: null,
+      repo: null,
+      note: 'Technical report and paper work',
+    },
+  },
+  {
     title: 'Human Follower Drone',
     slug: 'human-follower-drone',
     featured: false,
@@ -242,6 +291,30 @@ export const projects = [
       live: null,
       repo: null,
       note: 'Case study only',
+    },
+  },
+  {
+    title: 'Speech Emotion Recognition',
+    slug: 'speech-emotion-recognition',
+    featured: false,
+    category: 'Machine Learning',
+    timeframe: '2023',
+    status: 'ML project',
+    summary:
+      'Built a speech emotion recognition pipeline over the RAVDESS dataset with MFCC, Chroma, and Mel-Spectrogram features.',
+    overview:
+      'This project focused on feature extraction and classification rather than drones, but it sharpened my machine-learning workflow. I built the preprocessing pipeline, compared feature sets, and trained the classifier around emotion labels.',
+    role: 'Feature extraction, model training, evaluation',
+    outcomes: [
+      'Reached 72 to 75 percent accuracy across 8 emotions',
+      'Worked over 7,356 RAVDESS samples',
+      'Built a repeatable extraction and inference pipeline',
+    ],
+    stack: ['Python', 'Librosa', 'MFCC', 'Chroma', 'Mel-Spectrogram', 'MLP Classifier'],
+    links: {
+      live: null,
+      repo: 'https://github.com/Bhaveshmeghwal21/speech-emotion-recognition',
+      note: 'Public repository',
     },
   },
 ]

@@ -32,22 +32,26 @@ export default function BlogPage() {
             </p>
           </Reveal>
 
-          <div className="mt-10 grid gap-5">
+          <div className="mt-10 border-t border-white/10">
             {posts.map((post, index) => (
-              <Reveal key={post.slug} delay={index * 0.04}>
-                <article className="surface p-6 md:p-8">
+              <Reveal key={post.slug} delay={index * 0.04} className="border-b border-white/10 py-6">
+                <article className="grid gap-3 lg:grid-cols-[12rem_minmax(0,1fr)_auto] lg:items-start">
                   <div className="text-xs uppercase tracking-[0.14em] text-zinc-500">
-                    {post.date} · {post.readTime}
+                    {post.date}
+                    <br />
+                    {post.readTime}
                   </div>
-                  <h2 className="mt-4 font-display text-3xl text-zinc-50">{post.title}</h2>
-                  <p className="mt-4 max-w-3xl text-base leading-8 text-zinc-300">
-                    {post.excerpt}
-                  </p>
+                  <div>
+                    <h2 className="font-display text-3xl text-zinc-50">{post.title}</h2>
+                    <p className="mt-3 max-w-3xl text-base leading-8 text-zinc-300">
+                      {post.excerpt}
+                    </p>
+                  </div>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="mt-6 inline-flex items-center gap-2 text-sm text-sky-300 hover:text-sky-200"
+                    className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-sky-200"
                   >
-                    Read post
+                    Read
                     <FiArrowRight />
                   </Link>
                 </article>
