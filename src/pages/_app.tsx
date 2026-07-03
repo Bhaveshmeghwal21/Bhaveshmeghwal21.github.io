@@ -1,24 +1,27 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import { IBM_Plex_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import Head from 'next/head'
-import { ThemeProvider } from '@/contexts/ThemeContext'
+import SmoothScroll from '@/components/motion/SmoothScroll'
 
-const inter = Inter({
+const body = IBM_Plex_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const heading = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-heading',
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const mono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-jetbrains',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
@@ -27,15 +30,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#05060f" />
+        <meta name="theme-color" content="#09090b" />
       </Head>
-      <ThemeProvider>
-        <main
-          className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans`}
-        >
-          <Component {...pageProps} />
-        </main>
-      </ThemeProvider>
+      <SmoothScroll />
+      <main className={`${body.variable} ${heading.variable} ${mono.variable} font-sans`}>
+        <Component {...pageProps} />
+      </main>
     </>
   )
 }
