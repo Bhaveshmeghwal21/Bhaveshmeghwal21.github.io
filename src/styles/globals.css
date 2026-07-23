@@ -9,9 +9,12 @@
   --line: rgba(255, 255, 255, 0.12);
   --text: #f4f4f5;
   --muted: #a1a1aa;
-  --accent: #38bdf8;
-  --accent-2: #60a5fa;
+  --accent: #ff5a33;
+  --accent-2: #ffb020;
+  --accent-dim: rgba(255, 90, 51, 0.16);
+  --accent-text: #1a0904;
   --shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+  --scroll-velocity: 0;
 }
 
 *,
@@ -35,7 +38,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at top, rgba(56, 189, 248, 0.06), transparent 20rem),
+    radial-gradient(circle at top, rgba(255, 90, 51, 0.07), transparent 20rem),
     linear-gradient(180deg, #09090b 0%, #0c0d11 100%);
   color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
@@ -47,7 +50,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.035), transparent 28rem);
+  background: radial-gradient(circle at top left, rgba(255, 176, 32, 0.03), transparent 28rem);
   pointer-events: none;
 }
 
@@ -76,12 +79,12 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #232734;
+  background: #2a2320;
   border-radius: 6px;
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.28);
+  background: rgba(255, 90, 51, 0.32);
   color: #f8fafc;
 }
 
@@ -109,7 +112,7 @@ textarea {
   display: block;
   width: 2.5rem;
   height: 1px;
-  background: rgba(56, 189, 248, 0.5);
+  background: linear-gradient(90deg, rgba(255, 90, 51, 0.7), rgba(255, 176, 32, 0.4));
 }
 
 .section-title {
@@ -159,8 +162,8 @@ textarea {
 }
 
 .button-primary {
-  background: var(--accent);
-  color: #03111b;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--accent-text);
 }
 
 .button-secondary {
@@ -240,6 +243,55 @@ textarea:focus-visible {
 
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+}
+
+/* Custom reticle cursor: hide the native pointer once the JS cursor takes over */
+html.cursor-enabled,
+html.cursor-enabled a,
+html.cursor-enabled button,
+html.cursor-enabled [data-cursor] {
+  cursor: none !important;
+}
+
+.shadow-glow-accent {
+  box-shadow: 0 8px 28px rgba(255, 90, 51, 0.35);
+}
+
+/* SplitText line masks: clip each line so words animate in from underneath */
+.split-line-mask,
+.kinetic-heading .line {
+  overflow: clip;
+}
+
+/* Scroll-velocity skew: driven by --scroll-velocity, set from GSAP ScrollTrigger.onUpdate */
+.velocity-skew {
+  transform: skewY(calc(var(--scroll-velocity, 0) * 1deg));
+  will-change: transform;
+}
+
+/* Hollow display type for oversized ghost numerals and marquee accents */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 244, 245, 0.22);
+}
+
+.text-outline-accent {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 90, 51, 0.45);
+}
+
+/* Faint dot-grid backdrop for HUD-flavored sections */
+.hud-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Velocity marquee rows */
+.marquee-row {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
 }
 
 /* Reduced motion */

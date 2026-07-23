@@ -5,6 +5,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteNav from '@/components/layout/SiteNav'
 import Reveal from '@/components/motion/Reveal'
+import KineticHeading from '@/components/motion/KineticHeading'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content.mjs'
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -43,16 +44,20 @@ export default function BlogPostPage({
       <main>
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
-            <Link href="/blog" className="eyebrow">
+            <Link href="/blog" className="eyebrow" data-cursor>
               <FiArrowLeft />
               Back to blog
             </Link>
             <div className="mt-6 text-xs uppercase tracking-[0.14em] text-zinc-500">
               {post.date} · {post.readTime}
             </div>
-            <h1 className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.5rem)] leading-[0.98] text-zinc-50">
+            <KineticHeading
+              as="h1"
+              trigger="load"
+              className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.5rem)] leading-[0.98] text-zinc-50"
+            >
               {post.title}
-            </h1>
+            </KineticHeading>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{post.intro}</p>
           </Reveal>
 

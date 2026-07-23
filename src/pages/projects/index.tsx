@@ -1,19 +1,52 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteNav from '@/components/layout/SiteNav'
 import Reveal from '@/components/motion/Reveal'
+import TraceRow from '@/components/motion/TraceRow'
+import KineticHeading from '@/components/motion/KineticHeading'
 import { projectFilters, projects } from '@/content/projects.mjs'
+import { ensureGsapPlugins, Flip, gsap, prefersReducedMotion } from '@/lib/motion'
 
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
+  const listRef = useRef<HTMLDivElement>(null)
 
   const visibleProjects = useMemo(() => {
     if (activeFilter === 'All') return projects
     return projects.filter((project) => project.category === activeFilter)
   }, [activeFilter])
+
+  const handleFilter = (filter: string) => {
+    if (filter === activeFilter) return
+
+    if (prefersReducedMotion() || !listRef.current) {
+      setActiveFilter(filter)
+      return
+    }
+
+    ensureGsapPlugins()
+    const state = Flip.getState(listRef.current.children)
+
+    flushSync(() => setActiveFilter(filter))
+
+    Flip.from(state, {
+      duration: 0.65,
+      ease: 'power3.inOut',
+      absolute: true,
+      stagger: 0.025,
+      onEnter: (elements) =>
+        gsap.fromTo(
+          elements,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.03, ease: 'power2.out' }
+        ),
+      onLeave: (elements) => gsap.to(elements, { opacity: 0, duration: 0.2 }),
+    })
+  }
 
   return (
     <>
@@ -30,9 +63,9 @@ export default function ProjectsPage() {
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
             <div className="eyebrow">All projects</div>
-            <h1 className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
+            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
               Archive of builds, systems, and product work
-            </h1>
+            </KineticHeading>
             <p className="section-copy max-w-3xl">
               This page holds the full range. The homepage only shows the short list.
             </p>
@@ -45,12 +78,13 @@ export default function ProjectsPage() {
                 <button
                   key={filter}
                   type="button"
-                  className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                  data-cursor
+                  className={`rounded-full px-4 py-2 text-sm transition-colors duration-300 ${
                     active
-                      ? 'bg-sky-400 text-slate-950'
+                      ? 'bg-gradient-to-r from-accent-400 to-ember-400 text-[#1a0904]'
                       : 'border border-white/10 bg-white/5 text-zinc-300 hover:text-white'
                   }`}
-                  onClick={() => setActiveFilter(filter)}
+                  onClick={() => handleFilter(filter)}
                 >
                   {filter}
                 </button>
@@ -58,9 +92,9 @@ export default function ProjectsPage() {
             })}
           </Reveal>
 
-          <div className="mt-10 border-t border-white/10">
+          <div ref={listRef} className="mt-10 border-t border-white/10">
             {visibleProjects.map((project, index) => (
-              <Reveal key={project.slug} delay={index * 0.03} className="border-b border-white/10 py-6">
+              <TraceRow key={project.slug} index={index}>
                 <article className="grid gap-4 lg:grid-cols-[4rem_minmax(0,1fr)_auto] lg:items-start">
                   <div className="font-mono text-sm text-zinc-600">
                     {(index + 1).toString().padStart(2, '0')}
@@ -79,7 +113,8 @@ export default function ProjectsPage() {
                   <div className="flex flex-wrap items-center gap-4 text-sm lg:justify-end">
                     <Link
                       href={`/projects/${project.slug}`}
-                      className="inline-flex items-center gap-2 text-sky-300 hover:text-sky-200"
+                      data-cursor
+                      className="inline-flex items-center gap-2 text-accent-300 hover:text-ember-300"
                     >
                       Case study
                       <FiArrowRight />
@@ -89,6 +124,7 @@ export default function ProjectsPage() {
                         href={project.links.live}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-cursor
                         className="inline-flex items-center gap-2 text-zinc-300 hover:text-white"
                       >
                         Live
@@ -100,6 +136,7 @@ export default function ProjectsPage() {
                         href={project.links.repo}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-cursor
                         className="inline-flex items-center gap-2 text-zinc-300 hover:text-white"
                       >
                         Code
@@ -108,7 +145,7 @@ export default function ProjectsPage() {
                     ) : null}
                   </div>
                 </article>
-              </Reveal>
+              </TraceRow>
             ))}
           </div>
         </section>

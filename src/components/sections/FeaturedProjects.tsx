@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
 import { getFeaturedProjects } from '@/lib/content.mjs'
 import Reveal from '@/components/motion/Reveal'
+import TraceRow from '@/components/motion/TraceRow'
+import KineticHeading from '@/components/motion/KineticHeading'
 
 const featuredProjects = getFeaturedProjects()
 
@@ -10,9 +12,9 @@ export default function FeaturedProjects() {
     <section id="work" className="section-container">
       <Reveal>
         <div className="eyebrow">Selected work</div>
-        <h2 className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4.5rem)]">
+        <KineticHeading as="h2" className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4.5rem)]">
           A short list from the portfolio
-        </h2>
+        </KineticHeading>
         <p className="section-copy">
           I kept the homepage tight. The archive carries the rest.
         </p>
@@ -20,7 +22,7 @@ export default function FeaturedProjects() {
 
       <div className="mt-10 border-t border-white/10">
         {featuredProjects.map((project, index) => (
-          <Reveal key={project.slug} delay={index * 0.04} className="border-b border-white/10 py-6">
+          <TraceRow key={project.slug} index={index}>
             <article className="grid gap-4 lg:grid-cols-[4rem_minmax(0,1fr)_auto] lg:items-start">
               <div className="font-mono text-sm text-zinc-600">0{index + 1}</div>
               <div>
@@ -40,7 +42,8 @@ export default function FeaturedProjects() {
               <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-300 lg:justify-end">
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="inline-flex items-center gap-2 text-sky-300 hover:text-sky-200"
+                  data-cursor
+                  className="inline-flex items-center gap-2 text-accent-300 transition-transform duration-300 hover:text-ember-300 group-hover:translate-x-0.5"
                 >
                   Case study
                   <FiArrowRight />
@@ -50,6 +53,7 @@ export default function FeaturedProjects() {
                     href={project.links.live}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor
                     className="inline-flex items-center gap-2 hover:text-white"
                   >
                     Live
@@ -61,6 +65,7 @@ export default function FeaturedProjects() {
                     href={project.links.repo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor
                     className="inline-flex items-center gap-2 hover:text-white"
                   >
                     Code
@@ -69,7 +74,7 @@ export default function FeaturedProjects() {
                 ) : null}
               </div>
             </article>
-          </Reveal>
+          </TraceRow>
         ))}
       </div>
 

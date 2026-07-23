@@ -13,8 +13,22 @@ module.exports = {
         surface: '#101218',
         'surface-2': '#161923',
         line: 'rgba(255,255,255,0.12)',
-        accent: '#38bdf8',
-        'accent-2': '#60a5fa',
+        accent: {
+          DEFAULT: '#ff5a33',
+          50: '#fff1ec',
+          200: '#ffcab0',
+          300: '#ffa375',
+          400: '#ff5a33',
+          500: '#ef4423',
+          600: '#c9331a',
+        },
+        ember: {
+          DEFAULT: '#ffb020',
+          300: '#ffd166',
+          400: '#ffb020',
+          500: '#f2941a',
+        },
+        'accent-2': '#ffb020',
         muted: '#a1a1aa',
       },
       fontFamily: {
@@ -25,6 +39,7 @@ module.exports = {
       animation: {
         shimmer: 'shimmer 2.4s linear infinite',
         trace: 'trace 10s linear infinite',
+        blink: 'blink 1.1s step-end infinite',
       },
       keyframes: {
         shimmer: {
@@ -34,6 +49,10 @@ module.exports = {
         trace: {
           '0%': { strokeDashoffset: '440' },
           '100%': { strokeDashoffset: '0' },
+        },
+        blink: {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
         },
       },
     },

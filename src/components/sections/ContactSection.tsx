@@ -4,6 +4,7 @@ import { useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { FiGithub, FiLinkedin, FiMail, FiPhone, FiSend } from 'react-icons/fi'
 import Reveal from '@/components/motion/Reveal'
+import KineticHeading from '@/components/motion/KineticHeading'
 import { site } from '@/content/site.mjs'
 
 const links = [
@@ -61,10 +62,10 @@ export default function ContactSection() {
     <section id="contact" className="section-container">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
         <Reveal className="surface p-6 md:p-8">
-          <div className="eyebrow">Contact</div>
-          <h2 className="mt-5 font-display text-4xl leading-tight text-zinc-50">
+          <div className="eyebrow">05 / Contact</div>
+          <KineticHeading as="h2" className="mt-5 font-display text-4xl leading-tight text-zinc-50">
             If the work fits, send a note.
-          </h2>
+          </KineticHeading>
           <p className="mt-5 text-base leading-8 text-zinc-300">{site.availability}</p>
           <div className="mt-8 space-y-3">
             {links.map(({ label, value, href, icon: Icon }) => (
@@ -73,9 +74,10 @@ export default function ContactSection() {
                 href={href}
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                data-cursor
                 className="surface-muted flex items-center gap-4 px-4 py-4 text-zinc-200 transition-colors hover:text-white"
               >
-                <Icon className="text-sky-300" size={18} />
+                <Icon className="text-accent-300" size={18} />
                 <div>
                   <div className="text-xs uppercase tracking-[0.14em] text-zinc-500">
                     {label}
@@ -134,12 +136,17 @@ export default function ContactSection() {
                 required
               />
             </label>
-            <button type="submit" className="button-primary w-full" disabled={status === 'sending'}>
+            <button
+              type="submit"
+              data-cursor
+              className="button-primary w-full"
+              disabled={status === 'sending'}
+            >
               {status === 'sending' ? 'Sending' : 'Send message'}
               <FiSend />
             </button>
             {status === 'success' ? (
-              <p className="text-sm text-sky-300">Message sent. I will get back to you.</p>
+              <p className="text-sm text-accent-300">Message sent. I will get back to you.</p>
             ) : null}
             {status === 'error' ? (
               <p className="text-sm text-rose-300">

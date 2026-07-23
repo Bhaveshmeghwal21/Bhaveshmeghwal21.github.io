@@ -34,6 +34,28 @@ export const site = {
     { label: 'Club leadership', value: '30+ Members' },
     { label: 'National ranking', value: 'Top 10' },
   ],
+  flightLog: [
+    {
+      code: 'WP-01',
+      title: 'Inter IIT Tech Meet 13.0',
+      detail: 'Fault-tolerant PX4 control recovered a quadrotor from motor failure. Top 10 among 23 IITs.',
+    },
+    {
+      code: 'WP-02',
+      title: 'Aero Modelling Club',
+      detail: 'Secretary at IIT BHU. Led a 30-member club through drone builds, workshops, and simulation sessions.',
+    },
+    {
+      code: 'WP-03',
+      title: 'PAWAAC Drones',
+      detail: 'Delta-wing VTOL surveillance systems, QGroundControl vision integration, PX4 transition tuning.',
+    },
+    {
+      code: 'WP-04',
+      title: 'AI Products',
+      detail: 'ReBloom live in production. Pawaac Analyzer in beta with Army and Police pilots.',
+    },
+  ],
   aboutParagraphs: [
     'I am a final-year Mechanical Engineering student at IIT (BHU) Varanasi. I build drones, control systems, and software around them. That usually means PX4, simulation, operator workflows, and whatever bridge is missing between a technical system and the person using it.',
     'At Inter IIT Tech Meet 13.0, our team finished in the national top 10 after building a fault-tolerant control setup that recovered a quadrotor from motor failure. Outside competition work, I have led the Aero Modelling Club, worked on VTOL systems at PAWAAC Drones, and built software products around AI and drone operations.',

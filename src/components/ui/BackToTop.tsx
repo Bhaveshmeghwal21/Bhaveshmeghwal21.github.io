@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FiArrowUp } from 'react-icons/fi'
+import { smoothScrollTo } from '@/lib/scroll'
 
 /**
  * Floating "scroll to top" control that fades in after the user scrolls
@@ -26,11 +27,12 @@ const BackToTop = () => {
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => smoothScrollTo(0)}
           aria-label="Back to top"
+          data-cursor
           className="fixed bottom-6 right-6 z-[55] grid h-12 w-12 place-items-center rounded-full
-                     text-[#04121a] shadow-glow"
-          style={{ background: 'linear-gradient(135deg,#22d3ee,#8b5cf6)' }}
+                     text-[#1a0904] shadow-glow-accent"
+          style={{ background: 'linear-gradient(135deg,#ff5a33,#ffb020)' }}
         >
           <FiArrowUp size={20} />
         </motion.button>

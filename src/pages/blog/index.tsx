@@ -4,6 +4,8 @@ import { FiArrowRight } from 'react-icons/fi'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteNav from '@/components/layout/SiteNav'
 import Reveal from '@/components/motion/Reveal'
+import TraceRow from '@/components/motion/TraceRow'
+import KineticHeading from '@/components/motion/KineticHeading'
 import { posts } from '@/content/blog.mjs'
 
 export default function BlogPage() {
@@ -22,9 +24,9 @@ export default function BlogPage() {
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
             <div className="eyebrow">Blog</div>
-            <h1 className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
+            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
               Writing I wanted to keep
-            </h1>
+            </KineticHeading>
             <p className="section-copy max-w-3xl">
               I write after a build leaves a mark. Some posts come from flight
               systems. Some come from product work. All of them come from real
@@ -34,7 +36,7 @@ export default function BlogPage() {
 
           <div className="mt-10 border-t border-white/10">
             {posts.map((post, index) => (
-              <Reveal key={post.slug} delay={index * 0.04} className="border-b border-white/10 py-6">
+              <TraceRow key={post.slug} index={index}>
                 <article className="grid gap-3 lg:grid-cols-[12rem_minmax(0,1fr)_auto] lg:items-start">
                   <div className="text-xs uppercase tracking-[0.14em] text-zinc-500">
                     {post.date}
@@ -49,13 +51,14 @@ export default function BlogPage() {
                   </div>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-sky-200"
+                    data-cursor
+                    className="inline-flex items-center gap-2 text-sm text-accent-300 hover:text-ember-300"
                   >
                     Read
                     <FiArrowRight />
                   </Link>
                 </article>
-              </Reveal>
+              </TraceRow>
             ))}
           </div>
         </section>

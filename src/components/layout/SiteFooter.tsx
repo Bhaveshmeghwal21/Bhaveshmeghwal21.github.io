@@ -12,13 +12,13 @@ export default function SiteFooter() {
           </p>
         </div>
         <div className="flex flex-wrap gap-4">
-          <Link href="/projects" className="hover:text-white">
+          <Link href="/projects" data-cursor className="hover:text-white">
             All projects
           </Link>
-          <Link href="/blog" className="hover:text-white">
+          <Link href="/blog" data-cursor className="hover:text-white">
             Blog
           </Link>
-          <a href={`mailto:${site.email}`} className="hover:text-white">
+          <a href={`mailto:${site.email}`} data-cursor className="hover:text-white">
             Email
           </a>
         </div>

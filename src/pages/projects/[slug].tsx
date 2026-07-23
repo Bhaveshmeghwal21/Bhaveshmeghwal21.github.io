@@ -5,6 +5,7 @@ import { FiArrowLeft, FiExternalLink, FiGithub } from 'react-icons/fi'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteNav from '@/components/layout/SiteNav'
 import Reveal from '@/components/motion/Reveal'
+import KineticHeading from '@/components/motion/KineticHeading'
 import { getAllProjectSlugs, getProjectBySlug } from '@/lib/content.mjs'
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -43,7 +44,7 @@ export default function ProjectDetailPage({
       <main>
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
-            <Link href="/projects" className="eyebrow">
+            <Link href="/projects" className="eyebrow" data-cursor>
               <FiArrowLeft />
               Back to projects
             </Link>
@@ -52,9 +53,13 @@ export default function ProjectDetailPage({
               <span>{project.timeframe}</span>
               <span>{project.status}</span>
             </div>
-            <h1 className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.75rem)] leading-[0.96] text-zinc-50">
+            <KineticHeading
+              as="h1"
+              trigger="load"
+              className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.75rem)] leading-[0.96] text-zinc-50"
+            >
               {project.title}
-            </h1>
+            </KineticHeading>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{project.summary}</p>
           </Reveal>
 
@@ -91,6 +96,7 @@ export default function ProjectDetailPage({
                     href={project.links.live}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor
                     className="inline-flex items-center gap-2 hover:text-white"
                   >
                     Live product
@@ -102,6 +108,7 @@ export default function ProjectDetailPage({
                     href={project.links.repo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor
                     className="inline-flex items-center gap-2 hover:text-white"
                   >
                     Repository

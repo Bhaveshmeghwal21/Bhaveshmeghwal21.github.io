@@ -16,7 +16,7 @@ interface SpotlightCardProps {
 const SpotlightCard = ({
   children,
   className = '',
-  spotlightColor = 'rgba(34, 211, 238, 0.18)',
+  spotlightColor = 'rgba(255, 90, 51, 0.16)',
 }: SpotlightCardProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const [pos, setPos] = useState({ x: 0, y: 0 })
