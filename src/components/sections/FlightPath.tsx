@@ -2,15 +2,16 @@
 
 import { useEffect, useRef } from 'react'
 import Drone from '@/components/motion/Drone'
+import TiltCard from '@/components/motion/TiltCard'
 import { site } from '@/content/site.mjs'
 import { ensureGsapPlugins, gsap, prefersReducedMotion } from '@/lib/motion'
 
-/** Waypoint card anchor positions (percent of the pinned viewport), tuned to sit near the path. */
+/** Waypoint card anchor positions (percent of the pinned viewport) — one per quadrant with generous margins so cards never collide. */
 const WAYPOINT_POSITIONS = [
-  { x: '22%', y: '16%' },
-  { x: '48%', y: '58%' },
-  { x: '72%', y: '20%' },
-  { x: '80%', y: '66%' },
+  { x: '14%', y: '6%' },
+  { x: '58%', y: '20%' },
+  { x: '18%', y: '60%' },
+  { x: '66%', y: '76%' },
 ]
 
 /** Timeline progress marks at which each waypoint activates. */
@@ -28,6 +29,7 @@ export default function FlightPath() {
   const stageRef = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
   const droneRef = useRef<HTMLDivElement>(null)
+  const droneStageRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const root = rootRef.current
@@ -49,6 +51,30 @@ export default function FlightPath() {
       gsap.set(path, { strokeDasharray: `${length}`, strokeDashoffset: length })
       gsap.set(drone, { opacity: 0 })
 
+      // Bank into turns and pitch with climb/descent: sample the path's
+      // tangent a hair ahead of the current point on every scroll update and
+      // drive the drone's own preserve-3d stage (rotateY/X) — real 3D layered
+      // on top of the 2D motion-path travel, no WebGL required.
+      let prevHeading: number | null = null
+      const applyBank = (progress: number) => {
+        const stageEl = droneStageRef.current
+        if (!stageEl) return
+        const p2 = Math.min(1, progress + 0.008)
+        const a = path.getPointAtLength(length * progress)
+        const b = path.getPointAtLength(length * p2)
+        const dx = b.x - a.x
+        const dy = b.y - a.y
+        const heading = Math.atan2(dy, dx)
+        if (prevHeading === null) prevHeading = heading
+        let dh = heading - prevHeading
+        if (dh > Math.PI) dh -= Math.PI * 2
+        if (dh < -Math.PI) dh += Math.PI * 2
+        prevHeading = heading
+        const bank = gsap.utils.clamp(-24, 24, dh * 300)
+        const pitch = gsap.utils.clamp(-14, 14, -dy * 0.9)
+        gsap.set(stageEl, { rotateY: bank, rotateX: pitch })
+      }
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
@@ -57,6 +83,7 @@ export default function FlightPath() {
           pin: true,
           scrub: 0.7,
           anticipatePin: 1,
+          onUpdate: (self) => applyBank(self.progress),
         },
       })
 
@@ -118,8 +145,13 @@ export default function FlightPath() {
           </h2>
         </div>
 
-        {/* Flight path + drone (desktop only) */}
-        <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden>
+        {/* Flight path + drone (desktop only). Starts below the heading block
+            so the curve never crosses the text — it used to run straight
+            through "The route so far". */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 top-48 hidden md:top-64 md:block"
+          aria-hidden
+        >
           <svg
             className="h-full w-full"
             viewBox="0 0 1440 760"
@@ -148,33 +180,35 @@ export default function FlightPath() {
           </svg>
 
           <div ref={droneRef} className="absolute left-0 top-0 w-24 opacity-0 lg:w-28">
-            <Drone className="h-auto w-full" />
+            <Drone stageRef={droneStageRef} className="h-auto w-full" />
           </div>
         </div>
 
         {/* Waypoint cards */}
-        <div className="relative mx-auto mt-8 w-full max-w-6xl space-y-4 px-4 pb-16 md:mt-0 md:h-[52vh] md:space-y-0 md:px-6 md:pb-0">
+        <div className="relative mx-auto mt-8 w-full max-w-6xl space-y-4 px-4 pb-16 md:mt-0 md:h-[68vh] md:space-y-0 md:px-6 md:pb-0">
           {site.flightLog.map((wp, i) => (
-            <article
+            <TiltCard
               key={wp.code}
-              data-waypoint
+              max={7}
               style={
                 {
                   '--wp-x': WAYPOINT_POSITIONS[i]?.x,
                   '--wp-y': WAYPOINT_POSITIONS[i]?.y,
                 } as React.CSSProperties
               }
-              className="surface max-w-xs p-5 opacity-0 md:absolute md:left-[var(--wp-x)] md:top-[var(--wp-y)] md:-translate-x-1/2"
+              className="max-w-xs md:absolute md:left-[var(--wp-x)] md:top-[var(--wp-y)] md:w-64 md:-translate-x-1/2"
             >
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent-400">
-                  {wp.code}
-                </span>
-                <span className="h-px flex-1 bg-gradient-to-r from-accent-400/50 to-transparent" />
-              </div>
-              <h3 className="mt-3 font-display text-lg text-zinc-50">{wp.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">{wp.detail}</p>
-            </article>
+              <article data-waypoint className="surface p-5 opacity-0">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent-400">
+                    {wp.code}
+                  </span>
+                  <span className="h-px flex-1 bg-gradient-to-r from-accent-400/50 to-transparent" />
+                </div>
+                <h3 className="mt-3 font-display text-lg text-zinc-50">{wp.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{wp.detail}</p>
+              </article>
+            </TiltCard>
           ))}
         </div>
       </div>

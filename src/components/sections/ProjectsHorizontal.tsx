@@ -5,8 +5,11 @@ import Link from 'next/link'
 import { FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
 import { getFeaturedProjects } from '@/lib/content.mjs'
 import { ensureGsapPlugins, gsap, prefersReducedMotion } from '@/lib/motion'
+import TiltCard from '@/components/motion/TiltCard'
 
-const featured = getFeaturedProjects()
+// Curated, not the full list — three strong cases beats six competing for
+// attention. The rest live at /projects behind "Full archive" below.
+const featured = getFeaturedProjects().slice(0, 3)
 const total = String(featured.length).padStart(2, '0')
 
 /**
@@ -31,6 +34,12 @@ export default function ProjectsHorizontal() {
     mm.add('(min-width: 768px)', () => {
       const distance = () => track.scrollWidth - window.innerWidth
 
+      // Cover-flow depth: cards away from viewport-center bank in 3D
+      // (rotateY), recede (z) and dim slightly — genuine 3D-on-scroll, not
+      // just a horizontal slide.
+      const cards = gsap.utils.toArray<HTMLElement>('.tilt-card', track)
+      gsap.set(cards, { transformPerspective: 1400 })
+
       gsap.to(track, {
         x: () => -distance(),
         ease: 'none',
@@ -43,9 +52,24 @@ export default function ProjectsHorizontal() {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            if (!counterRef.current) return
-            const index = Math.round(self.progress * (featured.length - 1)) + 1
-            counterRef.current.textContent = String(index).padStart(2, '0')
+            if (counterRef.current) {
+              const index = Math.round(self.progress * (featured.length - 1)) + 1
+              counterRef.current.textContent = String(index).padStart(2, '0')
+            }
+
+            const trackX = (gsap.getProperty(track, 'x') as number) || 0
+            const viewportCenter = window.innerWidth / 2
+            const spread = window.innerWidth * 0.66
+            cards.forEach((card) => {
+              const cardCenter = card.offsetLeft + card.offsetWidth / 2 + trackX
+              const ratio = gsap.utils.clamp(-1, 1, (cardCenter - viewportCenter) / spread)
+              gsap.set(card, {
+                rotateY: ratio * -16,
+                z: -Math.abs(ratio) * 90,
+                scale: 1 - Math.abs(ratio) * 0.06,
+                opacity: 1 - Math.abs(ratio) * 0.35,
+              })
+            })
           },
         },
       })
@@ -69,9 +93,9 @@ export default function ProjectsHorizontal() {
           className="mt-10 flex flex-col gap-6 px-4 md:mt-12 md:w-max md:flex-row md:items-stretch md:gap-8 md:pl-[max(1rem,calc((100vw-72rem)/2))] md:pr-[36vw]"
         >
           {featured.map((project, index) => (
+            <TiltCard key={project.slug} className="w-full shrink-0 md:w-[42rem] md:max-w-[86vw]" max={6}>
             <article
-              key={project.slug}
-              className="surface group relative w-full shrink-0 overflow-hidden p-6 transition-colors duration-500 hover:border-accent-400/30 md:w-[42rem] md:max-w-[86vw] md:p-9"
+              className="surface group relative h-full w-full overflow-hidden p-6 transition-colors duration-500 hover:border-accent-400/30 md:p-9"
             >
               <div
                 aria-hidden
@@ -137,6 +161,7 @@ export default function ProjectsHorizontal() {
                 </div>
               </div>
             </article>
+            </TiltCard>
           ))}
         </div>
 

@@ -13,9 +13,12 @@ type RevealProps = {
 }
 
 /**
- * Scroll-triggered reveal, now driven by GSAP ScrollTrigger (synced to the
- * shared Lenis scroller in SmoothScroll) instead of a plain IntersectionObserver,
- * so timing lines up exactly with the rest of the scroll-linked motion system.
+ * Scroll-triggered reveal, driven by GSAP ScrollTrigger (synced to the shared
+ * Lenis scroller in SmoothScroll). Entrance is a real 3D tilt-up — rotateX
+ * settles from a few degrees back to flat, using GSAP's transformPerspective
+ * so the foreshortening is baked into this element's own transform matrix
+ * (no wrapping "perspective host" div required, so Reveal keeps working as a
+ * layout container — grids, flex-wraps — not just a single-block wrapper).
  */
 export default function Reveal({ children, className = '', delay = 0, y = 28, scrub = false }: RevealProps) {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -25,18 +28,25 @@ export default function Reveal({ children, className = '', delay = 0, y = 28, sc
     if (!node) return
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set(node, { opacity: 1, y: 0 })
+      gsap.set(node, { opacity: 1, y: 0, rotateX: 0 })
       return
     }
 
     ensureGsapPlugins()
-    gsap.set(node, { opacity: 0, y })
+    gsap.set(node, {
+      opacity: 0,
+      y,
+      rotateX: 12,
+      transformPerspective: 700,
+      transformOrigin: '50% 100%',
+    })
 
     const tween = gsap.to(node, {
       opacity: 1,
       y: 0,
+      rotateX: 0,
       delay: scrub ? 0 : delay,
-      duration: scrub ? 1 : 0.8,
+      duration: scrub ? 1 : 0.9,
       ease: 'power3.out',
       scrollTrigger: scrub
         ? { trigger: node, start: 'top 88%', end: 'top 55%', scrub: 0.6 }

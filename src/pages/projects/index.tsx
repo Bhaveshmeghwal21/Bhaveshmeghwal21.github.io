@@ -81,7 +81,7 @@ export default function ProjectsPage() {
                   data-cursor
                   className={`rounded-full px-4 py-2 text-sm transition-colors duration-300 ${
                     active
-                      ? 'bg-gradient-to-r from-accent-400 to-ember-400 text-[#1a0904]'
+                      ? 'bg-gradient-to-r from-accent-400 to-ember-400 text-[#fff5f5]'
                       : 'border border-white/10 bg-white/5 text-zinc-300 hover:text-white'
                   }`}
                   onClick={() => handleFilter(filter)}

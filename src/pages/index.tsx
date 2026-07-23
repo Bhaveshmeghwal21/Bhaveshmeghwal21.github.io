@@ -6,6 +6,7 @@ import HomeHero from '@/components/sections/HomeHero'
 import FlightPath from '@/components/sections/FlightPath'
 import StatsBand from '@/components/sections/StatsBand'
 import ProjectsHorizontal from '@/components/sections/ProjectsHorizontal'
+import FocusStack from '@/components/sections/FocusStack'
 import AboutScrub from '@/components/sections/AboutScrub'
 import WritingPreview from '@/components/sections/WritingPreview'
 import ContactSection from '@/components/sections/ContactSection'
@@ -26,6 +27,7 @@ export default function Home() {
         <FlightPath />
         <StatsBand />
         <ProjectsHorizontal />
+        <FocusStack />
         <AboutScrub />
         <WritingPreview />
         <ContactSection />

@@ -38,15 +38,20 @@ export default function HomeHero() {
     const ctx = gsap.context(() => {
       gsap.set('[data-hero-fade]', { opacity: 0, y: 26 })
 
-      // Scroll-out choreography: name lines shear apart, drone flies off.
+      // Scroll-out choreography: name lines shear apart, drone banks away and
+      // climbs into the distance (rotateY/rotateX + z, real 3D recession
+      // thanks to the .perspective-host on its wrapper).
       const scrollOut = { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.6 }
       gsap.to('[data-hero-line="0"]', { xPercent: -7, opacity: 0.25, ease: 'none', scrollTrigger: scrollOut })
       gsap.to('[data-hero-line="1"]', { xPercent: 7, opacity: 0.25, ease: 'none', scrollTrigger: scrollOut })
       if (droneRef.current) {
         gsap.to(droneRef.current, {
-          x: 170,
-          y: -320,
-          rotation: 12,
+          x: 220,
+          y: -360,
+          z: -280,
+          rotateY: -58,
+          rotateX: 20,
+          rotate: 10,
           opacity: 0,
           ease: 'power1.in',
           scrollTrigger: scrollOut,
@@ -83,25 +88,8 @@ export default function HomeHero() {
       })
     })
 
-    // Mouse parallax on the drone (outside the context: cleaned up manually).
-    const droneInner = droneRef.current?.firstElementChild ?? null
-    let onMove: ((e: MouseEvent) => void) | null = null
-    if (droneInner) {
-      const xTo = gsap.quickTo(droneInner, 'x', { duration: 0.7, ease: 'power3.out' })
-      const yTo = gsap.quickTo(droneInner, 'y', { duration: 0.7, ease: 'power3.out' })
-      onMove = (e: MouseEvent) => {
-        const nx = e.clientX / window.innerWidth - 0.5
-        const ny = e.clientY / window.innerHeight - 0.5
-        xTo(nx * 34)
-        yTo(ny * 26)
-      }
-      window.addEventListener('mousemove', onMove)
-    }
-
     return () => {
       cancelled = true
-      if (onMove) window.removeEventListener('mousemove', onMove)
-      if (droneInner) gsap.killTweensOf(droneInner)
       splits.forEach((split) => split.revert())
       ctx.revert()
     }
@@ -122,7 +110,7 @@ export default function HomeHero() {
             <span
               key={line}
               data-hero-line={i}
-              className="block text-[clamp(3.6rem,14vw,12rem)] will-change-transform"
+              className="block text-[clamp(2.25rem,6.5vw,5.75rem)] will-change-transform"
             >
               {line}
             </span>
@@ -179,14 +167,25 @@ export default function HomeHero() {
         </div>
       </div>
 
-      {/* Drone: hovers top-right, parallaxes with the mouse, flies off on scroll */}
+      {/* Drone: hovers top-right, tilts toward the mouse in real 3D, banks away on scroll.
+          The perspective lives on this outer host so the inner (droneRef) element's own
+          rotateY/rotateX/z transform actually recedes in 3D instead of flattening. */}
       <div
-        ref={droneRef}
-        className="pointer-events-none absolute right-[4%] top-[12%] hidden w-[16rem] md:block lg:w-[19rem]"
+        className="perspective-host pointer-events-none absolute right-[4%] top-[12%] hidden w-[16rem] md:block lg:w-[19rem]"
         aria-hidden
       >
-        <div>
-          <Drone bob className="h-auto w-full" />
+        <div ref={droneRef} className="relative">
+          <Drone bob interactive className="h-auto w-full" />
+
+          {/* Viewfinder reticle frame — echoes the cursor's own reticle, a
+              quiet camera/targeting accent rather than another moving part.
+              Nested inside droneRef so it flies off together with the drone. */}
+          <div data-hero-fade className="pointer-events-none absolute -inset-6">
+            <span className="absolute left-0 top-0 h-4 w-4 border-l border-t border-accent-400/60" />
+            <span className="absolute right-0 top-0 h-4 w-4 border-r border-t border-accent-400/60" />
+            <span className="absolute bottom-0 left-0 h-4 w-4 border-b border-l border-accent-400/60" />
+            <span className="absolute bottom-0 right-0 h-4 w-4 border-b border-r border-accent-400/60" />
+          </div>
         </div>
       </div>
 

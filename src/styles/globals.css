@@ -9,10 +9,10 @@
   --line: rgba(255, 255, 255, 0.12);
   --text: #f4f4f5;
   --muted: #a1a1aa;
-  --accent: #ff5a33;
-  --accent-2: #ffb020;
-  --accent-dim: rgba(255, 90, 51, 0.16);
-  --accent-text: #1a0904;
+  --accent: #ff3347;
+  --accent-2: #8f0f22;
+  --accent-dim: rgba(255, 51, 71, 0.16);
+  --accent-text: #fff5f5;
   --shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
   --scroll-velocity: 0;
 }
@@ -38,7 +38,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at top, rgba(255, 90, 51, 0.07), transparent 20rem),
+    radial-gradient(circle at top, rgba(255, 51, 71, 0.07), transparent 20rem),
     linear-gradient(180deg, #09090b 0%, #0c0d11 100%);
   color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
@@ -50,7 +50,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(circle at top left, rgba(255, 176, 32, 0.03), transparent 28rem);
+  background: radial-gradient(circle at top left, rgba(139, 15, 34, 0.05), transparent 28rem);
   pointer-events: none;
 }
 
@@ -84,7 +84,7 @@ textarea {
 }
 
 ::selection {
-  background: rgba(255, 90, 51, 0.32);
+  background: rgba(255, 51, 71, 0.32);
   color: #f8fafc;
 }
 
@@ -112,7 +112,7 @@ textarea {
   display: block;
   width: 2.5rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 90, 51, 0.7), rgba(255, 176, 32, 0.4));
+  background: linear-gradient(90deg, rgba(255, 51, 71, 0.7), rgba(139, 15, 34, 0.4));
 }
 
 .section-title {
@@ -254,7 +254,7 @@ html.cursor-enabled [data-cursor] {
 }
 
 .shadow-glow-accent {
-  box-shadow: 0 8px 28px rgba(255, 90, 51, 0.35);
+  box-shadow: 0 8px 28px rgba(255, 51, 71, 0.35);
 }
 
 /* SplitText line masks: clip each line so words animate in from underneath */
@@ -277,13 +277,22 @@ html.cursor-enabled [data-cursor] {
 
 .text-outline-accent {
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 90, 51, 0.45);
+  -webkit-text-stroke: 1px rgba(255, 51, 71, 0.45);
 }
 
-/* Faint dot-grid backdrop for HUD-flavored sections */
+/* Dot-grid backdrop for HUD-flavored sections, washed with an ember-red glow
+   for atmosphere — the flat black canvas was reading as empty rather than
+   intentional negative space. */
 .hud-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 34px 34px;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255, 51, 71, 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 88% 25%, rgba(143, 15, 34, 0.16), transparent 70%),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    34px 34px;
+  background-repeat: no-repeat, no-repeat, repeat;
 }
 
 /* Velocity marquee rows */
@@ -291,6 +300,54 @@ html.cursor-enabled [data-cursor] {
   display: flex;
   width: max-content;
   white-space: nowrap;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3D rig: layered-flat-art technique. A perspective host (.drone-rig)     */
+/* holds a preserve-3d stage; each SVG layer sits at its own translateZ so */
+/* rotating the stage separates the layers into convincing parallax depth */
+/* without any WebGL.                                                     */
+/* ---------------------------------------------------------------------- */
+.drone-rig {
+  position: relative;
+  perspective: 1400px;
+}
+
+.drone-stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.drone-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Perspective host for elements that get rotateX/Y/Z applied directly to
+   them (rather than to an internal preserve-3d stage) — e.g. the hero
+   drone's scroll-out exit, which banks and recedes into the distance. */
+.perspective-host {
+  perspective: 1600px;
+}
+
+/* Mouse-tilt cards (project tiles, waypoint cards): outer div supplies the
+   perspective, inner div is the preserve-3d surface GSAP rotates/lifts.
+   Height is only on the inner layer — it relays a definite height down
+   (e.g. flexbox item-stretch in a card row) without forcing one where the
+   host has none (e.g. a compact, absolutely-positioned waypoint card). */
+.tilt-card {
+  perspective: 1200px;
+}
+
+.tilt-card-inner {
+  height: 100%;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
