@@ -3,12 +3,8 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Reveal from '@/components/motion/Reveal'
-import VelocityMarquee from '@/components/motion/VelocityMarquee'
 import { site } from '@/content/site.mjs'
 import { ensureGsapPlugins, gsap, SplitText, prefersReducedMotion } from '@/lib/motion'
-
-const FLIGHT_STACK = ['PX4', 'ROS 2', 'Gazebo', 'C++', 'EKF2', 'QGroundControl', 'OpenCV', 'MAVROS']
-const PRODUCT_STACK = ['Next.js', 'TypeScript', 'FastAPI', 'Three.js', 'Qt / QML', 'Redis', 'PostGIS', 'Azure OpenAI']
 
 /**
  * About block with the classic scroll-scrub text effect: every word starts
@@ -153,12 +149,6 @@ export default function AboutScrub() {
             </Reveal>
           </div>
         </div>
-      </div>
-
-      {/* Full-bleed velocity marquees */}
-      <div className="space-y-4 overflow-hidden border-y border-white/10 py-8">
-        <VelocityMarquee items={FLIGHT_STACK} direction={1} outline />
-        <VelocityMarquee items={PRODUCT_STACK} direction={-1} duration={30} />
       </div>
 
       {/* Experience timeline */}

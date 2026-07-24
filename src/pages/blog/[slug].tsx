@@ -54,7 +54,7 @@ export default function BlogPostPage({
             <KineticHeading
               as="h1"
               trigger="load"
-              className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.5rem)] leading-[0.98] text-zinc-50"
+              className="mt-6 max-w-4xl font-display text-[clamp(2.25rem,4vw,4rem)] leading-[1.02] text-zinc-50"
             >
               {post.title}
             </KineticHeading>

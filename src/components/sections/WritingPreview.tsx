@@ -12,7 +12,7 @@ export default function WritingPreview() {
     <section id="writing" className="section-container">
       <Reveal>
         <div className="eyebrow">04 / Writing</div>
-        <KineticHeading as="h2" className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4.5rem)]">
+        <KineticHeading as="h2" className="section-title max-w-4xl text-[clamp(2rem,3.2vw,3.25rem)]">
           Notes from the work
         </KineticHeading>
         <p className="section-copy">

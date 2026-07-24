@@ -63,7 +63,7 @@ export default function ProjectsPage() {
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
             <div className="eyebrow">All projects</div>
-            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
+            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4rem)]">
               Archive of builds, systems, and product work
             </KineticHeading>
             <p className="section-copy max-w-3xl">

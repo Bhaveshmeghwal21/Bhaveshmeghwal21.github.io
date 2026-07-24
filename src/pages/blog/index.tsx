@@ -24,7 +24,7 @@ export default function BlogPage() {
         <section className="section-container pt-12 md:pt-20">
           <Reveal>
             <div className="eyebrow">Blog</div>
-            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.5rem,5vw,5.5rem)]">
+            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4rem)]">
               Writing I wanted to keep
             </KineticHeading>
             <p className="section-copy max-w-3xl">

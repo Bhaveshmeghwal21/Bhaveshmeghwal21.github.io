@@ -83,7 +83,7 @@ export default function ProjectsHorizontal() {
       <div className="flex flex-col py-16 md:h-screen md:justify-center md:py-0">
         <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="eyebrow">02 / Selected work</div>
-          <h2 className="section-title max-w-3xl text-[clamp(2.25rem,4.5vw,4.5rem)]">
+          <h2 className="section-title max-w-3xl text-[clamp(2rem,3.2vw,3.25rem)]">
             Field-tested builds
           </h2>
         </div>
@@ -99,7 +99,7 @@ export default function ProjectsHorizontal() {
             >
               <div
                 aria-hidden
-                className="text-outline pointer-events-none absolute -right-2 -top-8 select-none font-display text-[9rem] font-bold leading-none md:text-[11rem]"
+                className="text-outline pointer-events-none absolute -right-2 -top-6 select-none font-display text-[5.5rem] font-bold leading-none md:text-[7rem]"
               >
                 {String(index + 1).padStart(2, '0')}
               </div>

@@ -110,7 +110,7 @@ export default function HomeHero() {
             <span
               key={line}
               data-hero-line={i}
-              className="block text-[clamp(2.25rem,6.5vw,5.75rem)] will-change-transform"
+              className="block text-[clamp(2rem,5.2vw,4.5rem)] will-change-transform"
             >
               {line}
             </span>

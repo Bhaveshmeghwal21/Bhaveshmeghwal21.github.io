@@ -140,7 +140,7 @@ export default function FlightPath() {
       <div ref={stageRef} className="relative flex flex-col md:h-screen md:justify-center">
         <div className="mx-auto w-full max-w-6xl px-4 pt-16 md:px-6 md:pt-24">
           <div className="eyebrow">01 / Flight log</div>
-          <h2 className="section-title max-w-3xl text-[clamp(2.25rem,4.5vw,4.5rem)]">
+          <h2 className="section-title max-w-3xl text-[clamp(2rem,3.2vw,3.25rem)]">
             The route so far
           </h2>
         </div>

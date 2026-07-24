@@ -56,7 +56,7 @@ export default function ProjectDetailPage({
             <KineticHeading
               as="h1"
               trigger="load"
-              className="mt-6 max-w-4xl font-display text-[clamp(2.75rem,5vw,5.75rem)] leading-[0.96] text-zinc-50"
+              className="mt-6 max-w-4xl font-display text-[clamp(2.25rem,4vw,4rem)] leading-[1.02] text-zinc-50"
             >
               {project.title}
             </KineticHeading>

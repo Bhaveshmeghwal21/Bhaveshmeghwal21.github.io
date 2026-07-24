@@ -118,9 +118,9 @@ textarea {
 .section-title {
   margin: 1rem 0 0;
   font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: clamp(2.5rem, 5vw, 5.75rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+  font-size: clamp(2rem, 3.6vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
 }
 
 .section-copy {
