@@ -34,10 +34,11 @@ for (const slug of [
   'rebloom',
   'pawaac-internship',
   'cfd-analysis-of-uav-propellers',
-  'speech-emotion-recognition',
+  'human-follower-drone',
 ]) {
   assert.ok(slugs.includes(slug), `missing project ${slug}`)
 }
+assert.ok(!slugs.includes('speech-emotion-recognition'), 'speech emotion recognition was removed')
 
 // Every project is complete enough to render a card and a case study.
 for (const project of projects) {
@@ -47,13 +48,35 @@ for (const project of projects) {
   assert.ok(project.outcomes.length > 0, `${project.slug} has no outcomes`)
   assert.ok(project.stack.length > 0, `${project.slug} has no stack`)
   assert.ok(projectFilters.includes(project.category), `${project.slug} has unknown category`)
-  for (const url of [project.links.live, project.links.repo]) {
+  const { live, repo, video, report } = project.links
+  for (const url of [live, repo, video, report]) {
     if (url) assert.match(url, /^https:\/\//, `${project.slug} link must be https`)
   }
   for (const image of project.images ?? []) {
     assert.ok(image.alt, `${project.slug} image needs alt text`)
     assert.ok(existsSync(`${publicDir}${image.src}`), `${image.src} does not exist`)
   }
+  if (project.video) {
+    assert.ok(project.video.alt, `${project.slug} clip needs alt text`)
+    for (const file of [project.video.src, project.video.poster]) {
+      assert.ok(existsSync(`${publicDir}${file}`), `${file} does not exist`)
+    }
+  }
+}
+
+// Every filter except "All" has at least one project.
+for (const filter of projectFilters.filter((f) => f !== 'All')) {
+  assert.ok(projects.some((p) => p.category === filter), `filter ${filter} would be empty`)
+}
+
+// Clips and their source material are wired up.
+for (const slug of ['quadrotor-fault-tolerant-control', 'human-follower-drone', 'swarm-drone-system']) {
+  const project = getProjectBySlug(slug)
+  assert.ok(project.video, `${slug} should have a clip`)
+  assert.match(project.links.video, /^https:\/\/drive\.google\.com\//, `${slug} should link its full video`)
+}
+for (const slug of ['quadrotor-fault-tolerant-control', 'cfd-analysis-of-uav-propellers']) {
+  assert.match(getProjectBySlug(slug).links.report, /^https:\/\/drive\.google\.com\//, `${slug} report`)
 }
 
 // New projects point at their public repositories.

@@ -3,6 +3,12 @@ export type ProjectImage = {
   alt: string
 }
 
+export type ProjectVideo = {
+  src: string
+  poster: string
+  alt: string
+}
+
 export type Project = {
   title: string
   slug: string
@@ -16,9 +22,12 @@ export type Project = {
   outcomes: string[]
   stack: string[]
   images?: ProjectImage[]
+  video?: ProjectVideo
   links: {
     live: string | null
     repo: string | null
+    video?: string
+    report?: string
     note: string
   }
 }

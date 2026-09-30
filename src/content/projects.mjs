@@ -1,10 +1,11 @@
-export const projectFilters = ['All', 'Software', 'AI Products', 'Robotics', 'Machine Learning']
+export const projectFilters = ['All', 'Software', 'AI Products', 'Robotics']
 
 /**
  * Project shape:
  *   featured   shown on the homepage (the first six, in array order)
  *   images     optional gallery for the case-study page ({ src, alt })
- *   links      live / repo URLs (null when unavailable) plus a short note
+ *   video      optional short silent loop for the case-study page ({ src, poster, alt })
+ *   links      live / repo / video / report URLs (null or absent when unavailable) plus a short note
  */
 export const projects = [
   {
@@ -83,7 +84,7 @@ export const projects = [
     summary:
       'Fault-tolerant control in PX4 that recovers a quadrotor from a single motor failure and lands it with low drift. Helped IIT BHU finish in the top 10 of 23 IITs.',
     overview:
-      'This started with a hard competition problem: keep a quadrotor stable after a motor failure, then land it without losing the frame. I worked on the control logic, the simulation flow and the recovery behaviour inside PX4 and Gazebo.',
+      'This started with a hard competition problem from ideaForge at Inter IIT Tech Meet 13.0: keep a quadrotor stable after a motor failure, then land it without losing the frame. In a team of eight, I worked on the control logic, the simulation flow and the recovery behaviour inside PX4 and Gazebo.',
     role: 'PX4 controls work, simulation, controller integration and recovery testing.',
     outcomes: [
       'Held X drift to 0.15 m during controlled landing tests',
@@ -91,10 +92,17 @@ export const projects = [
       'Helped the IIT BHU team finish in the top 10 among 23 IITs',
     ],
     stack: ['PX4', 'Gazebo', 'C++', 'EKF2', 'INDI'],
+    video: {
+      src: '/media/quadrotor-fault-tolerant-control.mp4',
+      poster: '/media/quadrotor-fault-tolerant-control.jpg',
+      alt: 'Gazebo simulation: a quadrotor hovers, a motor failure is injected, and the controller brings it down to a controlled landing',
+    },
     links: {
       live: null,
       repo: null,
-      note: 'Competition work. Case study only.',
+      video: 'https://drive.google.com/file/d/1C5sUq9e99ZBY5TbEaLuuKwq1JR7DZ8SF/view',
+      report: 'https://drive.google.com/file/d/1JI1yw_wChZ5imsGdWuNp-IXY3MMRagCa/view',
+      note: 'Competition work. The full video and team report are on Google Drive.',
     },
   },
   {
@@ -189,7 +197,7 @@ export const projects = [
     stack: ['Next.js', 'NestJS', 'TypeScript', 'Redis', 'PostGIS', 'TimescaleDB'],
     links: {
       live: null,
-      repo: 'https://github.com/Bhaveshmeghwal21/PAWAACDroneFleetOperationsPlatform',
+      repo: 'https://github.com/Pawaac-Drones/Fleet-Operations-Platform',
       note: 'Public repository.',
     },
   },
@@ -283,7 +291,8 @@ export const projects = [
     links: {
       live: null,
       repo: null,
-      note: 'Technical report and paper.',
+      report: 'https://drive.google.com/file/d/1XX3BcvQf46gvzrLCoK1Mkm1f8OatkfEC/view',
+      note: 'The full technical report is on Google Drive.',
     },
   },
   {
@@ -291,21 +300,28 @@ export const projects = [
     slug: 'human-follower-drone',
     featured: false,
     category: 'Robotics',
-    timeframe: '2023',
+    timeframe: '2024',
     status: 'Simulation',
     summary: 'A ROS pipeline that detects a person and has a drone follow them, in simulation.',
     overview:
-      'This project covered perception, control and autonomy in one loop. Computer vision detects a human target and feeds that signal into the flight stack.',
+      'This project covered perception, control and autonomy in one loop. A camera streams frames to a companion computer, computer vision tracks the person, and that signal drives the flight stack so the drone holds a fixed distance from its target.',
     role: 'ROS pipeline, tracking logic and simulation flow.',
     outcomes: [
       'Ran in ArduPilot SITL and Gazebo with MAVROS in the loop',
-      'Connected CV output to autonomous follow behaviour',
+      'Tracked the target with OpenCV, CvZone and MediaPipe pose landmarks',
+      'Kept a fixed follow distance from the person being tracked',
     ],
     stack: ['ROS Noetic', 'ArduPilot SITL', 'Gazebo', 'OpenCV', 'MediaPipe'],
+    video: {
+      src: '/media/human-follower-drone.mp4',
+      poster: '/media/human-follower-drone.jpg',
+      alt: 'Webcam feed with pose tracking on the left, and the simulated drone in Gazebo following the tracked person on the right',
+    },
     links: {
       live: null,
       repo: null,
-      note: 'Case study only.',
+      video: 'https://drive.google.com/file/d/1Oh1V27VyK4wmFPlU0hcOi-F_y4q_wBrU/view',
+      note: 'The full simulation video is on Google Drive.',
     },
   },
   {
@@ -324,34 +340,16 @@ export const projects = [
       'Set up monitoring and pre-flight checks for the swarm workflow',
     ],
     stack: ['Pixhawk', 'Skybrush', 'NodeMCU', 'Wi-Fi telemetry'],
+    video: {
+      src: '/media/swarm-drone-system.mp4',
+      poster: '/media/swarm-drone-system.jpg',
+      alt: 'Three drones with navigation lights lift off from a helipad at dusk and climb together into formation',
+    },
     links: {
       live: null,
       repo: null,
-      note: 'Case study only.',
-    },
-  },
-  {
-    title: 'Speech Emotion Recognition',
-    slug: 'speech-emotion-recognition',
-    featured: false,
-    category: 'Machine Learning',
-    timeframe: '2023',
-    status: 'ML project',
-    summary:
-      'An emotion classifier over the RAVDESS dataset using MFCC, Chroma and Mel-spectrogram features.',
-    overview:
-      'This project focused on feature extraction and classification. I built the preprocessing pipeline, compared feature sets and trained the classifier on emotion labels.',
-    role: 'Feature extraction, model training and evaluation.',
-    outcomes: [
-      'Reached 72 to 75 percent accuracy across 8 emotions',
-      'Trained on 7,356 RAVDESS samples',
-      'Built a repeatable extraction and inference pipeline',
-    ],
-    stack: ['Python', 'Librosa', 'MFCC', 'Mel-spectrogram', 'MLP classifier'],
-    links: {
-      live: null,
-      repo: 'https://github.com/Bhaveshmeghwal21/speech-emotion-recognition',
-      note: 'Public repository.',
+      video: 'https://drive.google.com/file/d/1nY2mdR0yXj0tvKSEsHsQTvdvVSRl4zHz/view',
+      note: 'The full flight video is on Google Drive.',
     },
   },
 ]

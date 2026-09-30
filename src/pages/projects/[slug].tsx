@@ -1,8 +1,17 @@
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FiArrowLeft, FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
+import type { IconType } from 'react-icons'
+import {
+  FiArrowLeft,
+  FiArrowRight,
+  FiExternalLink,
+  FiFileText,
+  FiGithub,
+  FiPlayCircle,
+} from 'react-icons/fi'
 import Layout from '@/components/Layout'
+import LoopingVideo from '@/components/LoopingVideo'
 import { getAllProjectSlugs, getNextProject, getProjectBySlug } from '@/lib/content.mjs'
 import type { Project } from '@/lib/types'
 
@@ -35,6 +44,13 @@ export default function ProjectPage({
   next,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [cover, ...gallery] = project.images ?? []
+  const { links } = project
+  const actions = [
+    links.repo && { label: 'View source', href: links.repo, icon: FiGithub },
+    links.live && { label: 'Visit site', href: links.live, icon: FiExternalLink },
+    links.video && { label: 'Watch full video', href: links.video, icon: FiPlayCircle },
+    links.report && { label: 'Read the report', href: links.report, icon: FiFileText },
+  ].filter((action): action is { label: string; href: string; icon: IconType } => Boolean(action))
 
   return (
     <Layout title={project.title} description={project.summary}>
@@ -56,33 +72,30 @@ export default function ProjectPage({
           </h1>
           <p className="mt-5 text-lg leading-8 text-muted">{project.summary}</p>
 
-          {project.links.repo || project.links.live ? (
-            <div className="mt-8 flex flex-wrap gap-3">
-              {project.links.repo ? (
-                <a
-                  href={project.links.repo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                >
-                  <FiGithub aria-hidden />
-                  View source
-                </a>
-              ) : null}
-              {project.links.live ? (
-                <a
-                  href={project.links.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={project.links.repo ? 'btn-secondary' : 'btn-primary'}
-                >
-                  Visit site
-                  <FiExternalLink aria-hidden />
-                </a>
-              ) : null}
-            </div>
+          {actions.length ? (
+            <ul className="mt-8 flex flex-wrap gap-3">
+              {actions.map(({ label, href, icon: Icon }, index) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={index === 0 ? 'btn-primary' : 'btn-secondary'}
+                  >
+                    <Icon aria-hidden />
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           ) : null}
         </header>
+
+        {project.video ? (
+          <div className="mt-12">
+            <LoopingVideo {...project.video} />
+          </div>
+        ) : null}
 
         {cover ? (
           <div className="mt-12">
@@ -137,7 +150,7 @@ export default function ProjectPage({
               </ul>
             </div>
             <div>
-              <h2 className="font-medium">Availability</h2>
+              <h2 className="font-medium">Notes</h2>
               <p className="mt-2 leading-6 text-muted">{project.links.note}</p>
             </div>
           </aside>
