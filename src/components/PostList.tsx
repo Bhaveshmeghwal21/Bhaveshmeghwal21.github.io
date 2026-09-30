@@ -24,6 +24,10 @@ export default function PostList({ posts, headingAs: Heading = 'h3' }: PostListP
             </div>
             <p className="order-first text-sm tabular-nums text-subtle sm:order-none sm:text-right">
               <time dateTime={post.date}>{formatDate(post.date)}</time>
+              <span aria-hidden className="sm:hidden">
+                {' · '}
+              </span>
+              <span className="sm:mt-1 sm:block">{post.readTime}</span>
             </p>
           </Link>
         </li>

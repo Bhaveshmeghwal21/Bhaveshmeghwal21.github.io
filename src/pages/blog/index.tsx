@@ -16,11 +16,14 @@ export default function BlogPage({ posts }: InferGetStaticPropsType<typeof getSt
   return (
     <Layout
       title="Writing"
-      description="Essays by Bhavesh Meghwal on robotics, AI products and building things that hold up in the field."
+      description="Essays by Bhavesh Meghwal on working with AI, leading people, and what building drones and software teaches about both."
     >
       <div className="container-page py-14 sm:py-20">
         <PageHeader title="Writing">
-          <p>Notes I write after a project leaves a lesson behind.</p>
+          <p>
+            Essays on working with AI and leading people. I write one when something I am building
+            teaches me a lesson worth keeping.
+          </p>
         </PageHeader>
         <div className="mt-12">
           <PostList posts={posts} headingAs="h2" />

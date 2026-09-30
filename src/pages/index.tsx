@@ -32,7 +32,12 @@ export default function Home({ projects, posts }: InferGetStaticPropsType<typeof
     <Layout>
       <Hero />
 
-      <Section id="writing" title="Writing" action={{ href: '/blog', label: 'All writing' }}>
+      <Section
+        id="writing"
+        title="Writing"
+        description="What building drones, software and a company is teaching me about working with AI and leading people."
+        action={{ href: '/blog', label: 'All writing' }}
+      >
         <PostList posts={posts} />
       </Section>
 
