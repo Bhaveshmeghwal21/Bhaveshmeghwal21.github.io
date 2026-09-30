@@ -6,7 +6,6 @@ const channels = [
   { label: 'Email', value: site.email, href: `mailto:${site.email}` },
   { label: 'LinkedIn', value: site.linkedinHandle, href: site.linkedin },
   { label: 'GitHub', value: site.githubHandle, href: site.github },
-  { label: 'Phone', value: site.phone, href: `tel:${site.phone.replace(/[^+\d]/g, '')}` },
 ]
 
 export default function Contact() {

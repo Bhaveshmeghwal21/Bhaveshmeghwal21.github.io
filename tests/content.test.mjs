@@ -120,6 +120,10 @@ for (const post of posts) {
 assert.ok(getPostBySlug('is-ai-really-helping-us').image, 'the Musashi essay has its painting')
 assert.ok(getPostBySlug('what-a-true-leader-should-be').image, 'the leadership post has its photograph')
 for (const post of posts) {
+  const card = `/images/og/${post.slug}.jpg`
+  assert.ok(existsSync(`${publicDir}${card}`), `${post.slug} needs a 1200x630 social card at public${card}`)
+}
+for (const post of posts) {
   for (const section of post.sections) {
     for (const block of section.paragraphs) {
       if (typeof block === 'object' && 'quote' in block) {
@@ -135,6 +139,8 @@ for (const post of posts) {
 assert.equal(site.name, 'Bhavesh Meghwal')
 assert.match(site.url, /^https:\/\//)
 assert.ok(site.description.length <= 160, 'meta description should stay under 160 characters')
+assert.ok(!('phone' in site), 'the phone number is kept off the public site')
+assert.match(site.goatcounter, /^([a-z0-9-]+)?$/, 'goatcounter is the bare site code, e.g. "bhavesh"')
 for (const asset of ['/images/avatar.jpg', '/images/og-card.png', '/favicon.svg']) {
   assert.ok(existsSync(`${publicDir}${asset}`), `${asset} does not exist`)
 }

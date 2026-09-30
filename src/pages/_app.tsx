@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
+import Analytics from '@/components/Analytics'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       `}</style>
       <Component {...pageProps} />
+      <Analytics />
     </>
   )
 }

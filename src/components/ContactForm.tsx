@@ -12,8 +12,17 @@ const EMAILJS = {
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
+/** A mailto: link carrying the visitor's message, used when sending fails. */
+function mailtoWith(name: string, message: string) {
+  const subject = `Portfolio message from ${name}`
+  // Keep the URL well under the length mail clients reliably accept.
+  const body = message.length > 1800 ? `${message.slice(0, 1800)}…` : message
+  return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>('idle')
+  const [fallbackHref, setFallbackHref] = useState(`mailto:${site.email}`)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -37,6 +46,8 @@ export default function ContactForm() {
       setStatus('sent')
     } catch (error) {
       console.error('Contact form failed', error)
+      // The form keeps its contents, and the fallback link carries the message.
+      setFallbackHref(mailtoWith(name, message))
       setStatus('error')
     }
   }
@@ -95,11 +106,11 @@ export default function ContactForm() {
           {status === 'sent' ? 'Thanks, your message is on its way.' : null}
           {status === 'error' ? (
             <>
-              Something went wrong. Email me directly at{' '}
-              <a href={`mailto:${site.email}`} className="link">
-                {site.email}
-              </a>
-              .
+              The message could not be sent.{' '}
+              <a href={fallbackHref} className="link">
+                Send it from your email app
+              </a>{' '}
+              instead, or write to {site.email}.
             </>
           ) : null}
         </p>

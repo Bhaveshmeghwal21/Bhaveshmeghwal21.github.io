@@ -8,7 +8,7 @@ export const posts = [
     excerpt:
       'Most of the software on this site was built with AI coding tools. This is what that has taught me about where AI helps, where it quietly hurts, and why I give it four parts of the work in ten and keep the six that decide.',
     intro:
-      'I have been asked whether the machine that this age calls AI is truly helping people. Some say it will do everything for us. Some say it will ruin the minds of the young. I have thought about this for some time, and I set down here what I have come to understand, as one who has spent his whole life on a single craft. Read it slowly, and test each part against your own work.',
+      'I have been asked whether the machine that this age calls AI is truly helping people. Some say it will do everything for us. Some say it will ruin the minds of the young. I have thought about this for some time, and I set down here what I have come to understand, as one who has spent his whole year on a single craft. Read it slowly, and test each part against your own work.',
     image: {
       src: '/images/blog/hotei-watching-a-cockfight.jpg',
       alt: 'Ink painting of Hotei, a stooped figure in a dark robe leaning on a staff, watching two small birds fight at his feet',

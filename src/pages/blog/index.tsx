@@ -24,6 +24,11 @@ export default function BlogPage({ posts }: InferGetStaticPropsType<typeof getSt
             Essays on working with AI and leading people. I write one when something I am building
             teaches me a lesson worth keeping.
           </p>
+          <p className="mt-3 text-base">
+            <a href="/feed.xml" className="link">
+              Follow by RSS
+            </a>
+          </p>
         </PageHeader>
         <div className="mt-12">
           <PostList posts={posts} headingAs="h2" />

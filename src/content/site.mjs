@@ -9,7 +9,6 @@ export const site = {
   education: 'B.Tech, Mechanical Engineering',
   school: 'IIT (BHU) Varanasi, class of 2026',
   email: '21bhavesh04@gmail.com',
-  phone: '+91-7851861850',
   github: 'https://github.com/Bhaveshmeghwal21',
   githubHandle: 'Bhaveshmeghwal21',
   linkedin: 'https://www.linkedin.com/in/bm-bhavesh-meghwal/',
@@ -23,11 +22,18 @@ export const site = {
   heroIntro:
     'Mechanical engineer from IIT (BHU). I build flight-log analysis and fleet tools for drone operators, AI products like ReBloom, and open-source tools that AI agents can drive. My background is in PX4 and fault-tolerant flight control.',
   heroHighlights: [
-    'Top 10 of 23 IITs, Inter IIT Tech Meet 13.0',
     'Co-founder, PAWAAC Drones',
-    'Secretary, Aero Modelling Club',
+    'Shipped Pawaac Analyzer and ReBloom',
+    'Top 10 of 23 IITs, Inter IIT Tech Meet 13.0',
   ],
-  availability: 'Open to internships, research work and product engineering roles.',
+  availability:
+    'I am building PAWAAC Drones. Write to me about drone software, tools for AI agents, collaborations or product engineering work.',
+
+  /**
+   * GoatCounter site code for privacy-friendly visit counts (no cookies).
+   * Empty turns analytics off. For https://CODE.goatcounter.com, put 'CODE'.
+   */
+  goatcounter: '',
 
   navItems: [
     { label: 'Projects', href: '/projects' },

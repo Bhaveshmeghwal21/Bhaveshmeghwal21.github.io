@@ -20,7 +20,12 @@ export const getStaticProps: GetStaticProps<{ post: Post }> = async ({ params })
 
 export default function PostPage({ post }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <Layout title={post.title} description={post.excerpt}>
+    <Layout
+      title={post.title}
+      description={post.excerpt}
+      image={`/images/og/${post.slug}.jpg`}
+      article={{ publishedTime: post.date }}
+    >
       <article className="container-page py-14 sm:py-20">
         <div className="mx-auto max-w-2xl">
           <Link

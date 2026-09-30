@@ -7,6 +7,12 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Bhavesh Meghwal · Writing"
+          href="/feed.xml"
+        />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0b" />
       </Head>
