@@ -20,6 +20,7 @@ export const posts = [
         label: 'Public domain, via Wikimedia Commons',
         href: 'https://commons.wikimedia.org/wiki/File:Hotei_Watching_a_Cockfight.jpg',
       },
+      cardFocus: '30%',
     },
     sections: [
       {
@@ -225,6 +226,7 @@ export const posts = [
         label: 'Public domain, via Wikimedia Commons',
         href: 'https://commons.wikimedia.org/wiki/File:Endurance_under_full_sail_Frank_Hurley_State_Library_NSW_a090012h.jpg',
       },
+      cardFocus: '40%',
     },
     sections: [
       {

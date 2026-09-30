@@ -5,6 +5,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import Layout from '@/components/Layout'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content.mjs'
 import { formatDate } from '@/lib/format'
+import { blogPostingJsonLd } from '@/lib/jsonLd'
 import type { Post } from '@/lib/types'
 
 export const getStaticPaths: GetStaticPaths = async () => ({
@@ -25,6 +26,7 @@ export default function PostPage({ post }: InferGetStaticPropsType<typeof getSta
       description={post.excerpt}
       image={`/images/og/${post.slug}.jpg`}
       article={{ publishedTime: post.date }}
+      jsonLd={blogPostingJsonLd(post)}
     >
       <article className="container-page py-14 sm:py-20">
         <div className="mx-auto max-w-2xl">

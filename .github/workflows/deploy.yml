@@ -24,11 +24,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "24"
           cache: "npm"
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Content tests
+        run: npm test
+
+      - name: Lint
+        run: npm run lint
 
       - name: Build with Next.js
         run: npm run build

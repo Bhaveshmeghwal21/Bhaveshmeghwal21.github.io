@@ -15,8 +15,14 @@ type LayoutProps = {
   article?: { publishedTime: string }
   /** Keep the page out of search results (used by the 404 page). */
   noindex?: boolean
+  /** schema.org data for search engines (Person on the homepage, BlogPosting on essays). */
+  jsonLd?: Record<string, unknown>
   children: ReactNode
 }
+
+// "<" is escaped so text inside the data can never close the script tag early.
+const serializeJsonLd = (data: Record<string, unknown>) =>
+  JSON.stringify(data).replace(/</g, '\\u003c')
 
 export default function Layout({
   title,
@@ -24,6 +30,7 @@ export default function Layout({
   image = '/images/og-card.png',
   article,
   noindex = false,
+  jsonLd,
   children,
 }: LayoutProps) {
   const { asPath } = useRouter()
@@ -60,6 +67,12 @@ export default function Layout({
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
+        {jsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+          />
+        ) : null}
       </Head>
 
       <a

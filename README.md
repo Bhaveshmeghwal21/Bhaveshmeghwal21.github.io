@@ -26,7 +26,7 @@ All copy lives in `src/content/`, so changing text doesn't require touching comp
 
 Images go in `public/images/`. Project screenshots go in `public/images/projects/`, post images in `public/images/blog/`.
 
-Every post needs a 1200×630 social preview at `public/images/og/<slug>.jpg`; `npm test` fails without one.
+Every post needs a 1200×630 social preview at `public/images/og/<slug>.jpg`; `npm test` fails without one. Generate it with `npm run cards -- <slug>` (or `npm run cards` for all cards, including the site card `public/images/og-card.png`). It uses a local Chrome or Edge; set `CHROME_PATH` if it isn't found. Re-run it after changing a post's title, date, read time or image, the headline, or `site.url`.
 
 ## Structure
 
@@ -46,3 +46,9 @@ Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and
 The contact form sends mail through EmailJS from the browser. Restrict allowed origins for the public key in the EmailJS dashboard. If the form reports errors, check the Gmail service connection under Email Services there.
 
 Visit counts use [GoatCounter](https://www.goatcounter.com) (no cookies). Set `goatcounter` in `site.mjs` to your site code to turn it on; leave it empty to keep it off.
+
+## Custom domain
+
+1. At the registrar, point the domain at GitHub Pages: `A` records for the apex to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and a `CNAME` for `www` to `bhaveshmeghwal21.github.io`.
+2. Set the domain in the repo's Settings → Pages (or `gh api -X PUT repos/Bhaveshmeghwal21/Bhaveshmeghwal21.github.io/pages -f cname=example.com`) and turn on Enforce HTTPS once the certificate is issued. A `CNAME` file isn't needed because the site deploys from Actions.
+3. Change `url` in `site.mjs`, run `npm run cards`, and push. Canonical links, the sitemap, the feed and the social cards all follow `site.url`. The old github.io address redirects to the new domain automatically.

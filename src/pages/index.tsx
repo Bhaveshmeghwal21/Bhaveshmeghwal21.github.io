@@ -13,6 +13,7 @@ import {
   toPostSummary,
   toProjectSummary,
 } from '@/lib/content.mjs'
+import { personJsonLd } from '@/lib/jsonLd'
 import type { PostSummary, ProjectSummary } from '@/lib/types'
 
 type HomeProps = {
@@ -29,7 +30,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => ({
 
 export default function Home({ projects, posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <Layout>
+    <Layout jsonLd={personJsonLd()}>
       <Hero />
 
       <Section

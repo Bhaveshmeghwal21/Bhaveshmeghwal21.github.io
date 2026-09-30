@@ -66,6 +66,8 @@ export type PostImage = {
   height: number
   caption: string
   credit: { label: string; href: string }
+  /** Vertical focus of the crop on the social card, e.g. '30%'. Defaults to '35%'. */
+  cardFocus?: string
 }
 
 export type Post = {
