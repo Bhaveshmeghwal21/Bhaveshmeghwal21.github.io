@@ -35,7 +35,7 @@ export default function Home({ projects, posts }: InferGetStaticPropsType<typeof
       <Section
         id="work"
         title="Selected work"
-        description="Open-source tools, AI products and flight control I have built."
+        description="Drone software, AI products and open-source tools I have built."
         action={{ href: '/projects', label: 'All projects' }}
       >
         <ul className="grid gap-4 sm:grid-cols-2">

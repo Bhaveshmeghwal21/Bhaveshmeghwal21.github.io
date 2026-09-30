@@ -4,7 +4,7 @@ export const site = {
   url: 'https://bhaveshmeghwal21.github.io',
   profileImage: '/images/profile.jpeg',
   description:
-    'Bhavesh Meghwal builds drone flight control and the software around it, from PX4 fault recovery to AI products and open-source developer tools.',
+    'Bhavesh Meghwal builds software for drones and AI agents: flight-log analysis, fleet operations, AI products and open-source developer tools.',
   location: 'Varanasi, India',
   education: 'B.Tech, Mechanical Engineering',
   school: 'IIT (BHU) Varanasi, class of 2026',
@@ -19,9 +19,9 @@ export const site = {
   resumeRobotics:
     'https://drive.google.com/file/d/1DEYtS6IBMPIo-GRl5vmc44XYJhlwiHR-/view?usp=sharing',
 
-  headline: 'I build flight control for drones, and the software people use around them.',
+  headline: 'I build software for drones and AI agents.',
   heroIntro:
-    'Mechanical engineer from IIT (BHU) working across robotics and software: fault-tolerant PX4 control, AI products built on real flight data, and open-source developer tools built with AI coding agents.',
+    'Mechanical engineer from IIT (BHU). I build flight-log analysis and fleet tools for drone operators, AI products like ReBloom, and open-source tools that AI agents can drive. My background is in PX4 and fault-tolerant flight control.',
   heroHighlights: [
     'Top 10 of 23 IITs, Inter IIT Tech Meet 13.0',
     'UAV Engineering Intern, PAWAAC Drones',
