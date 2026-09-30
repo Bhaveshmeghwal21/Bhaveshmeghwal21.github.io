@@ -1,40 +1,60 @@
-import Head from 'next/head'
-import SiteNav from '@/components/layout/SiteNav'
-import SiteFooter from '@/components/layout/SiteFooter'
-import Preloader from '@/components/motion/Preloader'
-import HomeHero from '@/components/sections/HomeHero'
-import FlightPath from '@/components/sections/FlightPath'
-import StatsBand from '@/components/sections/StatsBand'
-import ProjectsHorizontal from '@/components/sections/ProjectsHorizontal'
-import FocusStack from '@/components/sections/FocusStack'
-import AboutScrub from '@/components/sections/AboutScrub'
-import WritingPreview from '@/components/sections/WritingPreview'
-import ContactSection from '@/components/sections/ContactSection'
-import AltitudeHUD from '@/components/ui/AltitudeHUD'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import Layout from '@/components/Layout'
+import PostList from '@/components/PostList'
+import ProjectCard from '@/components/ProjectCard'
+import Section from '@/components/Section'
+import About from '@/components/home/About'
+import Contact from '@/components/home/Contact'
+import Experience from '@/components/home/Experience'
+import Hero from '@/components/home/Hero'
+import {
+  getFeaturedPosts,
+  getFeaturedProjects,
+  toPostSummary,
+  toProjectSummary,
+} from '@/lib/content.mjs'
+import type { PostSummary, ProjectSummary } from '@/lib/types'
 
-export default function Home() {
+type HomeProps = {
+  projects: ProjectSummary[]
+  posts: PostSummary[]
+}
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => ({
+  props: {
+    projects: getFeaturedProjects().map(toProjectSummary),
+    posts: getFeaturedPosts().slice(0, 3).map(toPostSummary),
+  },
+})
+
+export default function Home({ projects, posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <>
-      <Head>
-        <title>Bhavesh Meghwal | Robotics, AI, and product systems</title>
-      </Head>
+    <Layout>
+      <Hero />
 
-      <Preloader />
-      <SiteNav />
+      <Section
+        id="work"
+        title="Selected work"
+        description="Open-source tools, AI products and flight control I have built."
+        action={{ href: '/projects', label: 'All projects' }}
+      >
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {projects.map((project) => (
+            <li key={project.slug}>
+              <ProjectCard project={project} />
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <main>
-        <HomeHero />
-        <FlightPath />
-        <StatsBand />
-        <ProjectsHorizontal />
-        <FocusStack />
-        <AboutScrub />
-        <WritingPreview />
-        <ContactSection />
-      </main>
+      <Experience />
+      <About />
 
-      <SiteFooter />
-      <AltitudeHUD />
-    </>
+      <Section id="writing" title="Writing" action={{ href: '/blog', label: 'All writing' }}>
+        <PostList posts={posts} />
+      </Section>
+
+      <Contact />
+    </Layout>
   )
 }

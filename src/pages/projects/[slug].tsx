@@ -1,127 +1,166 @@
-import Head from 'next/head'
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
-import { FiArrowLeft, FiExternalLink, FiGithub } from 'react-icons/fi'
-import SiteFooter from '@/components/layout/SiteFooter'
-import SiteNav from '@/components/layout/SiteNav'
-import Reveal from '@/components/motion/Reveal'
-import KineticHeading from '@/components/motion/KineticHeading'
-import { getAllProjectSlugs, getProjectBySlug } from '@/lib/content.mjs'
+import { FiArrowLeft, FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
+import Layout from '@/components/Layout'
+import { getAllProjectSlugs, getNextProject, getProjectBySlug } from '@/lib/content.mjs'
+import type { Project } from '@/lib/types'
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: getAllProjectSlugs().map((slug) => ({ params: { slug } })),
-    fallback: false,
-  }
+type ProjectPageProps = {
+  project: Project
+  next: { slug: string; title: string } | null
 }
 
-export const getStaticProps: GetStaticProps<{ project: any }> = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: getAllProjectSlugs().map((slug) => ({ params: { slug } })),
+  fallback: false,
+})
+
+export const getStaticProps: GetStaticProps<ProjectPageProps> = async ({ params }) => {
   const slug = String(params?.slug)
-  const project = getProjectBySlug(slug)
+  const project = getProjectBySlug(slug) as Project | undefined
+  if (!project) return { notFound: true }
 
-  if (!project) {
-    return { notFound: true }
-  }
-
+  const next = getNextProject(slug)
   return {
     props: {
       project,
+      next: next ? { slug: next.slug, title: next.title } : null,
     },
   }
 }
 
-export default function ProjectDetailPage({
+export default function ProjectPage({
   project,
+  next,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [cover, ...gallery] = project.images ?? []
+
   return (
-    <>
-      <Head>
-        <title>{project.title} | Bhavesh Meghwal</title>
-        <meta name="description" content={project.summary} />
-      </Head>
+    <Layout title={project.title} description={project.summary}>
+      <article className="container-page py-14 sm:py-20">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1.5 rounded-md text-sm text-muted transition-colors hover:text-fg"
+        >
+          <FiArrowLeft aria-hidden />
+          All projects
+        </Link>
 
-      <SiteNav />
-      <main>
-        <section className="section-container pt-12 md:pt-20">
-          <Reveal>
-            <Link href="/projects" className="eyebrow" data-cursor>
-              <FiArrowLeft />
-              Back to projects
-            </Link>
-            <div className="mt-6 flex flex-wrap gap-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
-              <span>{project.category}</span>
-              <span>{project.timeframe}</span>
-              <span>{project.status}</span>
+        <header className="mt-8 max-w-3xl">
+          <p className="text-sm text-subtle">
+            {project.category} · {project.timeframe} · {project.status}
+          </p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            {project.title}
+          </h1>
+          <p className="mt-5 text-lg leading-8 text-muted">{project.summary}</p>
+
+          {project.links.repo || project.links.live ? (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {project.links.repo ? (
+                <a
+                  href={project.links.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  <FiGithub aria-hidden />
+                  View source
+                </a>
+              ) : null}
+              {project.links.live ? (
+                <a
+                  href={project.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={project.links.repo ? 'btn-secondary' : 'btn-primary'}
+                >
+                  Visit site
+                  <FiExternalLink aria-hidden />
+                </a>
+              ) : null}
             </div>
-            <KineticHeading
-              as="h1"
-              trigger="load"
-              className="mt-6 max-w-4xl font-display text-[clamp(2.25rem,4vw,4rem)] leading-[1.02] text-zinc-50"
-            >
-              {project.title}
-            </KineticHeading>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{project.summary}</p>
-          </Reveal>
+          ) : null}
+        </header>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
-            <Reveal className="surface p-6 md:p-8">
-              <div className="reading-content max-w-none">
-                <h2>Overview</h2>
-                <p>{project.overview}</p>
-                <h2>Role</h2>
-                <p>{project.role}</p>
-                <h2>Outcomes</h2>
-                <ul>
-                  {project.outcomes.map((item: string) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-
-            <Reveal className="surface p-6 md:p-8" delay={0.08}>
-              <div className="text-xs uppercase tracking-[0.14em] text-zinc-500">Stack</div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.stack.map((item: string) => (
-                  <span key={item} className="chip">
-                    {item}
-                  </span>
+        {cover ? (
+          <div className="mt-12">
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              width={960}
+              height={540}
+              priority
+              className="w-full rounded-xl border border-line"
+            />
+            {gallery.length ? (
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {gallery.map((image) => (
+                  <Image
+                    key={image.src}
+                    src={image.src}
+                    alt={image.alt}
+                    width={960}
+                    height={540}
+                    className="w-full rounded-xl border border-line"
+                  />
                 ))}
               </div>
-
-              <div className="mt-8 text-xs uppercase tracking-[0.14em] text-zinc-500">Links</div>
-              <div className="mt-4 flex flex-col gap-3 text-sm text-zinc-300">
-                {project.links.live ? (
-                  <a
-                    href={project.links.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor
-                    className="inline-flex items-center gap-2 hover:text-white"
-                  >
-                    Live product
-                    <FiExternalLink />
-                  </a>
-                ) : null}
-                {project.links.repo ? (
-                  <a
-                    href={project.links.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cursor
-                    className="inline-flex items-center gap-2 hover:text-white"
-                  >
-                    Repository
-                    <FiGithub />
-                  </a>
-                ) : null}
-                <p className="leading-7 text-zinc-400">{project.links.note}</p>
-              </div>
-            </Reveal>
+            ) : null}
           </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+        ) : null}
+
+        <div className="mt-14 grid gap-12 md:grid-cols-[minmax(0,1fr)_14rem] md:gap-16">
+          <div className="prose-body max-w-2xl [&>h2:first-child]:mt-0">
+            <h2>Overview</h2>
+            <p>{project.overview}</p>
+            <h2>My role</h2>
+            <p>{project.role}</p>
+            <h2>Highlights</h2>
+            <ul>
+              {project.outcomes.map((outcome) => (
+                <li key={outcome}>{outcome}</li>
+              ))}
+            </ul>
+          </div>
+
+          <aside className="space-y-8 text-sm md:border-l md:border-line md:pl-8">
+            <div>
+              <h2 className="font-medium">Stack</h2>
+              <ul className="mt-3 flex flex-wrap gap-1.5">
+                {project.stack.map((item) => (
+                  <li key={item} className="tag">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="font-medium">Availability</h2>
+              <p className="mt-2 leading-6 text-muted">{project.links.note}</p>
+            </div>
+          </aside>
+        </div>
+
+        {next ? (
+          <nav aria-label="Next project" className="mt-20 border-t border-line pt-8">
+            <Link
+              href={`/projects/${next.slug}`}
+              className="group inline-flex flex-col gap-1 rounded-md"
+            >
+              <span className="text-sm text-subtle">Next project</span>
+              <span className="inline-flex items-center gap-2 text-lg font-medium transition-colors group-hover:text-accent">
+                {next.title}
+                <FiArrowRight
+                  aria-hidden
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
+              </span>
+            </Link>
+          </nav>
+        ) : null}
+      </article>
+    </Layout>
   )
 }

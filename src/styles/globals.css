@@ -2,378 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Palette as RGB channels (see tailwind.config.js). Light by default, dark when
+   the visitor's system prefers it. */
 :root {
-  --bg: #09090b;
-  --surface: #101218;
-  --surface-2: #161923;
-  --line: rgba(255, 255, 255, 0.12);
-  --text: #f4f4f5;
-  --muted: #a1a1aa;
-  --accent: #ff3347;
-  --accent-2: #8f0f22;
-  --accent-dim: rgba(255, 51, 71, 0.16);
-  --accent-text: #fff5f5;
-  --shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
-  --scroll-velocity: 0;
+  color-scheme: light dark;
+  --bg: 255 255 255;
+  --surface: 250 250 250;
+  --fg: 17 17 19;
+  --muted: 82 82 91;
+  --subtle: 113 113 122;
+  --line: 228 228 231;
+  --accent: 29 78 216;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: 10 10 11;
+    --surface: 19 19 21;
+    --fg: 237 237 239;
+    --muted: 161 161 170;
+    --subtle: 130 130 140;
+    --line: 39 39 42;
+    --accent: 129 161 255;
+  }
 }
 
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
-  background: var(--bg);
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
-  background:
-    radial-gradient(circle at top, rgba(255, 51, 71, 0.07), transparent 20rem),
-    linear-gradient(180deg, #09090b 0%, #0c0d11 100%);
-  color: var(--text);
-  font-family: var(--font-body), system-ui, sans-serif;
-  text-rendering: optimizeLegibility;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(circle at top left, rgba(139, 15, 34, 0.05), transparent 28rem);
-  pointer-events: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input,
-textarea {
-  font: inherit;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #09090b;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #2a2320;
-  border-radius: 6px;
-}
-
-::selection {
-  background: rgba(255, 51, 71, 0.32);
-  color: #f8fafc;
-}
-
-.section-container {
-  width: min(100%, 76rem);
-  margin-inline: auto;
-  padding-inline: 1.5rem;
-  padding-block: 6rem;
-  position: relative;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--accent);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: '';
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255, 51, 71, 0.7), rgba(139, 15, 34, 0.4));
-}
-
-.section-title {
-  margin: 1rem 0 0;
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: clamp(2rem, 3.6vw, 3.75rem);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-}
-
-.section-copy {
-  max-width: 42rem;
-  margin-top: 1.5rem;
-  color: #c4c7d0;
-  font-size: 1.05rem;
-  line-height: 1.75;
-}
-
-.surface {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  box-shadow: var(--shadow);
-}
-
-.surface-muted {
-  background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1rem;
-}
-
-.button-primary,
-.button-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  min-height: 3rem;
-  padding: 0.875rem 1.15rem;
-  border-radius: 999px;
-  font-weight: 600;
-  transition:
-    transform 220ms ease,
-    border-color 220ms ease,
-    background-color 220ms ease,
-    color 220ms ease;
-}
-
-.button-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: var(--accent-text);
-}
-
-.button-secondary {
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: #f4f4f5;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.button-primary:hover,
-.button-primary:focus-visible,
-.button-secondary:hover,
-.button-secondary:focus-visible {
-  transform: translateY(-1px);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
-  color: #c4c7d0;
-  font-size: 0.73rem;
-}
-
-.metric-value {
-  font-family: var(--font-mono), monospace;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  color: #f8fafc;
-}
-
-.graph-frame {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.015);
-}
-
-.reading-content {
-  max-width: 48rem;
-}
-
-.reading-content p {
-  margin: 0 0 1.25rem;
-  color: #d4d4d8;
-  line-height: 1.9;
-}
-
-.reading-content h2 {
-  margin: 2.75rem 0 1rem;
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  letter-spacing: -0.04em;
-}
-
-.reading-content ul {
-  margin: 0 0 1.5rem;
-  padding-left: 1.2rem;
-  color: #d4d4d8;
-}
-
-.reading-content li {
-  margin-bottom: 0.75rem;
-}
-
-.focus-ring:focus-visible,
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-/* Custom reticle cursor: hide the native pointer once the JS cursor takes over */
-html.cursor-enabled,
-html.cursor-enabled a,
-html.cursor-enabled button,
-html.cursor-enabled [data-cursor] {
-  cursor: none !important;
-}
-
-.shadow-glow-accent {
-  box-shadow: 0 8px 28px rgba(255, 51, 71, 0.35);
-}
-
-/* SplitText line masks: clip each line so words animate in from underneath */
-.split-line-mask,
-.kinetic-heading .line {
-  overflow: clip;
-}
-
-/* Scroll-velocity skew: driven by --scroll-velocity, set from GSAP ScrollTrigger.onUpdate */
-.velocity-skew {
-  transform: skewY(calc(var(--scroll-velocity, 0) * 1deg));
-  will-change: transform;
-}
-
-/* Hollow display type for oversized ghost numerals and marquee accents */
-.text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(244, 244, 245, 0.22);
-}
-
-.text-outline-accent {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 51, 71, 0.45);
-}
-
-/* Dot-grid backdrop for HUD-flavored sections, washed with an ember-red glow
-   for atmosphere — the flat black canvas was reading as empty rather than
-   intentional negative space. */
-.hud-grid {
-  background-image:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255, 51, 71, 0.16), transparent 70%),
-    radial-gradient(ellipse 45% 40% at 88% 25%, rgba(143, 15, 34, 0.16), transparent 70%),
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    34px 34px;
-  background-repeat: no-repeat, no-repeat, repeat;
-}
-
-/* Velocity marquee rows */
-.marquee-row {
-  display: flex;
-  width: max-content;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-/* ---------------------------------------------------------------------- */
-/* 3D rig: layered-flat-art technique. A perspective host (.drone-rig)     */
-/* holds a preserve-3d stage; each SVG layer sits at its own translateZ so */
-/* rotating the stage separates the layers into convincing parallax depth */
-/* without any WebGL.                                                     */
-/* ---------------------------------------------------------------------- */
-.drone-rig {
-  position: relative;
-  perspective: 1400px;
-}
-
-.drone-stage {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.drone-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-/* Perspective host for elements that get rotateX/Y/Z applied directly to
-   them (rather than to an internal preserve-3d stage) — e.g. the hero
-   drone's scroll-out exit, which banks and recedes into the distance. */
-.perspective-host {
-  perspective: 1600px;
-}
-
-/* Mouse-tilt cards (project tiles, waypoint cards): outer div supplies the
-   perspective, inner div is the preserve-3d surface GSAP rotates/lifts.
-   Height is only on the inner layer — it relays a definite height down
-   (e.g. flexbox item-stretch in a card row) without forcing one where the
-   host has none (e.g. a compact, absolutely-positioned waypoint card). */
-.tilt-card {
-  perspective: 1200px;
-}
-
-.tilt-card-inner {
-  height: 100%;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
   }
 
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-accent/20;
+  }
+
+  a,
+  button,
+  input,
+  textarea {
+    @apply outline-none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    @apply ring-2 ring-accent ring-offset-2 ring-offset-bg;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply btn bg-fg text-bg hover:bg-fg/85;
+  }
+
+  .btn-secondary {
+    @apply btn border border-line bg-bg text-fg hover:bg-surface;
+  }
+
+  .link {
+    @apply text-accent underline-offset-4 hover:underline;
+  }
+
+  .tag {
+    @apply inline-flex items-center rounded-md border border-line px-2 py-0.5 text-xs text-muted;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-line bg-bg px-3 py-2.5 text-sm text-fg placeholder:text-subtle transition-colors focus:border-fg/40;
+  }
+
+  /* Long-form reading (blog posts, case studies) */
+  .prose-body p {
+    @apply mb-5 leading-8 text-muted;
+  }
+
+  .prose-body h2 {
+    @apply mb-3 mt-12 text-xl font-semibold tracking-tight text-fg;
+  }
+
+  .prose-body ul {
+    @apply mb-5 list-disc space-y-2 pl-5 leading-7 text-muted marker:text-subtle;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
 
-@media (max-width: 640px) {
-  .section-container {
-    padding-inline: 1rem;
-    padding-block: 4.5rem;
-  }
-
-  .section-copy {
-    font-size: 1rem;
-    line-height: 1.7;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
   }
 }

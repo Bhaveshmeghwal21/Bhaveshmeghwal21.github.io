@@ -1,81 +1,67 @@
-import Head from 'next/head'
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { FiArrowLeft } from 'react-icons/fi'
-import SiteFooter from '@/components/layout/SiteFooter'
-import SiteNav from '@/components/layout/SiteNav'
-import Reveal from '@/components/motion/Reveal'
-import KineticHeading from '@/components/motion/KineticHeading'
+import Layout from '@/components/Layout'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content.mjs'
+import { formatDate } from '@/lib/format'
+import type { Post } from '@/lib/types'
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: getAllPostSlugs().map((slug) => ({ params: { slug } })),
-    fallback: false,
-  }
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: getAllPostSlugs().map((slug) => ({ params: { slug } })),
+  fallback: false,
+})
+
+export const getStaticProps: GetStaticProps<{ post: Post }> = async ({ params }) => {
+  const post = getPostBySlug(String(params?.slug)) as Post | undefined
+  if (!post) return { notFound: true }
+  return { props: { post } }
 }
 
-export const getStaticProps: GetStaticProps<{ post: any }> = async ({ params }) => {
-  const slug = String(params?.slug)
-  const post = getPostBySlug(slug)
-
-  if (!post) {
-    return { notFound: true }
-  }
-
-  return {
-    props: {
-      post,
-    },
-  }
-}
-
-export default function BlogPostPage({
-  post,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function PostPage({ post }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <>
-      <Head>
-        <title>{post.title} | Bhavesh Meghwal</title>
-        <meta name="description" content={post.excerpt} />
-      </Head>
+    <Layout title={post.title} description={post.excerpt}>
+      <article className="container-page py-14 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 rounded-md text-sm text-muted transition-colors hover:text-fg"
+          >
+            <FiArrowLeft aria-hidden />
+            All writing
+          </Link>
 
-      <SiteNav />
-      <main>
-        <section className="section-container pt-12 md:pt-20">
-          <Reveal>
-            <Link href="/blog" className="eyebrow" data-cursor>
-              <FiArrowLeft />
-              Back to blog
-            </Link>
-            <div className="mt-6 text-xs uppercase tracking-[0.14em] text-zinc-500">
-              {post.date} · {post.readTime}
-            </div>
-            <KineticHeading
-              as="h1"
-              trigger="load"
-              className="mt-6 max-w-4xl font-display text-[clamp(2.25rem,4vw,4rem)] leading-[1.02] text-zinc-50"
-            >
+          <header className="mt-8">
+            <p className="text-sm text-subtle">
+              <time dateTime={post.date}>{formatDate(post.date)}</time> · {post.readTime}
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
               {post.title}
-            </KineticHeading>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{post.intro}</p>
-          </Reveal>
+            </h1>
+            <p className="mt-5 text-lg leading-8 text-fg/80">{post.intro}</p>
+          </header>
 
-          <Reveal className="surface mt-12 p-6 md:p-10" delay={0.08}>
-            <article className="reading-content">
-              {post.sections.map((section: any) => (
-                <section key={section.heading}>
-                  <h2>{section.heading}</h2>
-                  {section.paragraphs.map((paragraph: string) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </section>
-              ))}
-            </article>
-          </Reveal>
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+          <div className="prose-body mt-10">
+            {post.sections.map((section) => (
+              <section key={section.heading}>
+                <h2>{section.heading}</h2>
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </section>
+            ))}
+          </div>
+
+          <div className="mt-16 border-t border-line pt-8">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 rounded-md text-sm text-muted transition-colors hover:text-fg"
+            >
+              <FiArrowLeft aria-hidden />
+              Back to all writing
+            </Link>
+          </div>
+        </div>
+      </article>
+    </Layout>
   )
 }

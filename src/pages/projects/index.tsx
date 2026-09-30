@@ -1,156 +1,77 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { useMemo, useRef, useState } from 'react'
-import { flushSync } from 'react-dom'
-import { FiArrowRight, FiExternalLink, FiGithub } from 'react-icons/fi'
-import SiteFooter from '@/components/layout/SiteFooter'
-import SiteNav from '@/components/layout/SiteNav'
-import Reveal from '@/components/motion/Reveal'
-import TraceRow from '@/components/motion/TraceRow'
-import KineticHeading from '@/components/motion/KineticHeading'
-import { projectFilters, projects } from '@/content/projects.mjs'
-import { ensureGsapPlugins, Flip, gsap, prefersReducedMotion } from '@/lib/motion'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { useState } from 'react'
+import Layout from '@/components/Layout'
+import PageHeader from '@/components/PageHeader'
+import ProjectCard from '@/components/ProjectCard'
+import { projectFilters, projects as allProjects } from '@/content/projects.mjs'
+import { toProjectSummary } from '@/lib/content.mjs'
+import type { ProjectSummary } from '@/lib/types'
 
-export default function ProjectsPage() {
-  const [activeFilter, setActiveFilter] = useState('All')
-  const listRef = useRef<HTMLDivElement>(null)
+type ProjectsProps = {
+  projects: ProjectSummary[]
+  filters: string[]
+}
 
-  const visibleProjects = useMemo(() => {
-    if (activeFilter === 'All') return projects
-    return projects.filter((project) => project.category === activeFilter)
-  }, [activeFilter])
+export const getStaticProps: GetStaticProps<ProjectsProps> = async () => ({
+  props: {
+    projects: allProjects.map(toProjectSummary),
+    // Hide filters that would show nothing.
+    filters: projectFilters.filter(
+      (filter) => filter === 'All' || allProjects.some((project) => project.category === filter)
+    ),
+  },
+})
 
-  const handleFilter = (filter: string) => {
-    if (filter === activeFilter) return
-
-    if (prefersReducedMotion() || !listRef.current) {
-      setActiveFilter(filter)
-      return
-    }
-
-    ensureGsapPlugins()
-    const state = Flip.getState(listRef.current.children)
-
-    flushSync(() => setActiveFilter(filter))
-
-    Flip.from(state, {
-      duration: 0.65,
-      ease: 'power3.inOut',
-      absolute: true,
-      stagger: 0.025,
-      onEnter: (elements) =>
-        gsap.fromTo(
-          elements,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.45, stagger: 0.03, ease: 'power2.out' }
-        ),
-      onLeave: (elements) => gsap.to(elements, { opacity: 0, duration: 0.2 }),
-    })
-  }
+export default function ProjectsPage({
+  projects,
+  filters,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [active, setActive] = useState('All')
+  const visible = active === 'All' ? projects : projects.filter((p) => p.category === active)
 
   return (
-    <>
-      <Head>
-        <title>Projects | Bhavesh Meghwal</title>
-        <meta
-          name="description"
-          content="Project archive across robotics, AI products, and product systems by Bhavesh Meghwal."
-        />
-      </Head>
+    <Layout
+      title="Projects"
+      description="Software, AI products, robotics and machine learning projects by Bhavesh Meghwal."
+    >
+      <div className="container-page py-14 sm:py-20">
+        <PageHeader title="Projects">
+          <p>Everything I have built, from open-source developer tools to drone flight control.</p>
+        </PageHeader>
 
-      <SiteNav />
-      <main>
-        <section className="section-container pt-12 md:pt-20">
-          <Reveal>
-            <div className="eyebrow">All projects</div>
-            <KineticHeading as="h1" className="section-title max-w-4xl text-[clamp(2.25rem,4vw,4rem)]">
-              Archive of builds, systems, and product work
-            </KineticHeading>
-            <p className="section-copy max-w-3xl">
-              This page holds the full range. The homepage only shows the short list.
-            </p>
-          </Reveal>
+        <div role="group" aria-label="Filter by category" className="mt-10 flex flex-wrap gap-2">
+          {filters.map((filter) => {
+            const selected = filter === active
+            return (
+              <button
+                key={filter}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setActive(filter)}
+                className={`h-9 rounded-full border px-4 text-sm transition-colors ${
+                  selected
+                    ? 'border-fg bg-fg text-bg'
+                    : 'border-line text-muted hover:border-fg/30 hover:text-fg'
+                }`}
+              >
+                {filter}
+              </button>
+            )
+          })}
+        </div>
 
-          <Reveal className="mt-8 flex flex-wrap gap-3">
-            {projectFilters.map((filter) => {
-              const active = filter === activeFilter
-              return (
-                <button
-                  key={filter}
-                  type="button"
-                  data-cursor
-                  className={`rounded-full px-4 py-2 text-sm transition-colors duration-300 ${
-                    active
-                      ? 'bg-gradient-to-r from-accent-400 to-ember-400 text-[#fff5f5]'
-                      : 'border border-white/10 bg-white/5 text-zinc-300 hover:text-white'
-                  }`}
-                  onClick={() => handleFilter(filter)}
-                >
-                  {filter}
-                </button>
-              )
-            })}
-          </Reveal>
+        <p className="sr-only" role="status" aria-live="polite">
+          Showing {visible.length} {visible.length === 1 ? 'project' : 'projects'}
+        </p>
 
-          <div ref={listRef} className="mt-10 border-t border-white/10">
-            {visibleProjects.map((project, index) => (
-              <TraceRow key={project.slug} index={index}>
-                <article className="grid gap-4 lg:grid-cols-[4rem_minmax(0,1fr)_auto] lg:items-start">
-                  <div className="font-mono text-sm text-zinc-600">
-                    {(index + 1).toString().padStart(2, '0')}
-                  </div>
-                  <div>
-                    <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.14em] text-zinc-500">
-                      <span>{project.category}</span>
-                      <span>{project.timeframe}</span>
-                      <span>{project.status}</span>
-                    </div>
-                    <h2 className="mt-3 font-display text-2xl text-zinc-50">{project.title}</h2>
-                    <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-300">{project.summary}</p>
-                    <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-400">{project.overview}</p>
-                    <p className="mt-3 text-sm text-zinc-500">{project.stack.slice(0, 5).join(' / ')}</p>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-4 text-sm lg:justify-end">
-                    <Link
-                      href={`/projects/${project.slug}`}
-                      data-cursor
-                      className="inline-flex items-center gap-2 text-accent-300 hover:text-ember-300"
-                    >
-                      Case study
-                      <FiArrowRight />
-                    </Link>
-                    {project.links.live ? (
-                      <a
-                        href={project.links.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-cursor
-                        className="inline-flex items-center gap-2 text-zinc-300 hover:text-white"
-                      >
-                        Live
-                        <FiExternalLink />
-                      </a>
-                    ) : null}
-                    {project.links.repo ? (
-                      <a
-                        href={project.links.repo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-cursor
-                        className="inline-flex items-center gap-2 text-zinc-300 hover:text-white"
-                      >
-                        Code
-                        <FiGithub />
-                      </a>
-                    ) : null}
-                  </div>
-                </article>
-              </TraceRow>
-            ))}
-          </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+          {visible.map((project) => (
+            <li key={project.slug}>
+              <ProjectCard project={project} headingAs="h2" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Layout>
   )
 }

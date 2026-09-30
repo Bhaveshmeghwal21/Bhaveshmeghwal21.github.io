@@ -1,91 +1,43 @@
-# Bhavesh Meghwal - Portfolio Website
+# Bhavesh Meghwal · Portfolio
 
-Modern, interactive portfolio website showcasing expertise in aerial robotics, autonomous systems, and drone technology.
+Personal site at [bhaveshmeghwal21.github.io](https://bhaveshmeghwal21.github.io): projects, writing and contact.
 
-## 🚀 Features
+Next.js 14 (pages router, static export), TypeScript and Tailwind CSS. Light and dark themes follow the visitor's system setting.
 
-- **Modern Tech Stack**: Built with Next.js 14, React, TypeScript, Tailwind CSS
-- **Smooth Animations**: Framer Motion for fluid transitions and scroll-triggered animations
-- **Particle Background**: Canvas-based animated particles resembling drone flight paths
-- **Responsive Design**: Mobile-first approach with perfect adaptation across all devices
-- **Dark Theme**: Optimized dark color scheme with highlight accents
-- **SEO Optimized**: Meta tags, Open Graph, and Twitter Cards for social sharing
-- **Performance**: Static site generation with optimized images and code splitting
-- **GitHub Pages Ready**: Configured for automatic deployment
-
-## 📋 Sections
-
-1. **Hero** - Animated introduction with tech stack badges
-2. **About** - Professional bio, stats, and resume downloads
-3. **Projects** - Filterable project showcase with detailed descriptions
-4. **Skills** - Animated progress bars grouped by category
-5. **Experience** - Timeline layout with roles and responsibilities
-6. **Contact** - Form with email integration and social links
-7. **Footer** - Quick links and copyright information
-
-## 🛠️ Installation
-
-### Prerequisites
-
-- Node.js >= 18.0.0
-- npm or yarn package manager
-
-### Steps
-
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-2. **Run development server**
-   ```bash
-   npm run dev
-   ```
-
-3. **Open browser** at [http://localhost:3000](http://localhost:3000)
-
-## 🏗️ Build & Deploy
-
-### Local Build
+## Develop
 
 ```bash
-npm run build
-npm run export
+npm install
+npm run dev      # http://localhost:3000
+npm run lint
+npm test         # content checks
+npm run build    # static site in ./out
 ```
 
-### Deploy to GitHub Pages
+## Edit content
 
-#### Automatic Deployment (Recommended)
+All copy lives in `src/content/`, so changing text doesn't require touching components.
 
-1. Enable GitHub Pages in repository settings → Pages → Set source to "GitHub Actions"
-2. Push to main branch:
-   ```bash
-   git add .
-   git commit -m "Deploy portfolio"
-   git push origin main
-   ```
-3. Access your site at `https://bhaveshmeghwal21.github.io/`
+| File | Contents |
+|---|---|
+| `site.mjs` | Name, headline, intro, links, navigation, skills, experience |
+| `projects.mjs` | Projects. `featured: true` puts one on the homepage (first six, in order). Optional `images` adds a gallery to its page. |
+| `blog.mjs` | Posts, with sections of paragraphs |
 
-#### Manual Deployment
+Images go in `public/images/`. Project screenshots go in `public/images/projects/`.
 
-```bash
-npm run deploy
+## Structure
+
+```
+src/components/        Layout, nav, footer, cards, lists, contact form
+src/components/home/   Homepage sections
+src/pages/             /, /projects, /projects/[slug], /blog, /blog/[slug]
+src/lib/               Content helpers, types, date formatting
+tests/                 Content integrity checks (npm test)
 ```
 
-## ⚙️ Configuration
+## Deploy
 
-### Update Personal Information
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes `./out` to GitHub Pages.
 
-Edit `src/utils/constants.js` to customize your content.
-
-For detailed instructions, see [INSTALLATION.md](./INSTALLATION.md)
-
-## 📧 Contact
-
-**Bhavesh Meghwal**
-- Email: 21bhavesh04@gmail.com
-- GitHub: [@Bhaveshmeghwal21](https://github.com/Bhaveshmeghwal21)
-
----
-
-**Built with ❤️ using Next.js, React, and Tailwind CSS**
+The contact form sends mail through EmailJS from the browser. Restrict allowed origins for the public key in the EmailJS dashboard.
