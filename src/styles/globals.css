@@ -99,6 +99,27 @@
   .prose-body ul {
     @apply mb-5 list-disc space-y-2 pl-5 leading-7 text-muted marker:text-subtle;
   }
+
+  .prose-body ol {
+    @apply mb-5 list-decimal space-y-2 pl-6 leading-7 text-muted marker:text-subtle;
+  }
+
+  /* Quoted passages: italic, set off with a rule, attributed underneath */
+  .prose-body .quote {
+    @apply my-8 border-l-2 border-fg/25 pl-5;
+  }
+
+  .prose-body .quote blockquote {
+    @apply text-lg italic leading-8 text-fg/85;
+  }
+
+  .prose-body .quote figcaption {
+    @apply mt-2 text-sm not-italic text-subtle;
+  }
+
+  .prose-body .note {
+    @apply mt-10 text-sm italic leading-6 text-subtle;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

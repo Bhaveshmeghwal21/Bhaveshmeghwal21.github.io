@@ -1,4 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FiArrowLeft } from 'react-icons/fi'
 import Layout from '@/components/Layout'
@@ -40,15 +41,57 @@ export default function PostPage({ post }: InferGetStaticPropsType<typeof getSta
             <p className="mt-5 text-lg leading-8 text-fg/80">{post.intro}</p>
           </header>
 
+          {post.image ? (
+            <figure className="mt-12">
+              <Image
+                src={post.image.src}
+                alt={post.image.alt}
+                width={post.image.width}
+                height={post.image.height}
+                priority
+                sizes="(min-width: 640px) 28rem, 100vw"
+                className="mx-auto w-full max-w-md rounded-lg border border-line"
+              />
+              <figcaption className="mx-auto mt-4 max-w-md text-center text-sm leading-6 text-muted">
+                {post.image.caption}{' '}
+                <a
+                  href={post.image.credit.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-subtle underline-offset-4 hover:text-fg hover:underline"
+                >
+                  {post.image.credit.label}
+                </a>
+              </figcaption>
+            </figure>
+          ) : null}
+
           <div className="prose-body mt-10">
             {post.sections.map((section) => (
               <section key={section.heading}>
                 <h2>{section.heading}</h2>
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
+                {section.paragraphs.map((block, index) => {
+                  if (typeof block === 'string') return <p key={block}>{block}</p>
+                  if ('quote' in block) {
+                    return (
+                      <figure key={`quote-${index}`} className="quote">
+                        <blockquote>{block.quote}</blockquote>
+                        <figcaption>— {block.cite}</figcaption>
+                      </figure>
+                    )
+                  }
+                  const List = block.ordered ? 'ol' : 'ul'
+                  return (
+                    <List key={`list-${index}`}>
+                      {block.list.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </List>
+                  )
+                })}
               </section>
             ))}
+            {post.note ? <p className="note">{post.note}</p> : null}
           </div>
 
           <div className="mt-16 border-t border-line pt-8">

@@ -5,7 +5,7 @@ export const site = {
   profileImage: '/images/profile.jpeg',
   description:
     'Bhavesh Meghwal builds software for drones and AI agents: flight-log analysis, fleet operations, AI products and open-source developer tools.',
-  location: 'Varanasi, India',
+  location: 'Delhi, India',
   education: 'B.Tech, Mechanical Engineering',
   school: 'IIT (BHU) Varanasi, class of 2026',
   email: '21bhavesh04@gmail.com',
@@ -24,7 +24,7 @@ export const site = {
     'Mechanical engineer from IIT (BHU). I build flight-log analysis and fleet tools for drone operators, AI products like ReBloom, and open-source tools that AI agents can drive. My background is in PX4 and fault-tolerant flight control.',
   heroHighlights: [
     'Top 10 of 23 IITs, Inter IIT Tech Meet 13.0',
-    'UAV Engineering Intern, PAWAAC Drones',
+    'Co-founder, PAWAAC Drones',
     'Secretary, Aero Modelling Club',
   ],
   availability: 'Open to internships, research work and product engineering roles.',
@@ -38,7 +38,7 @@ export const site = {
 
   aboutParagraphs: [
     'I studied Mechanical Engineering at IIT (BHU) Varanasi and spend most of my time where hardware meets software. That usually means PX4, simulation and operator workflows, and whatever bridge is missing between a technical system and the person using it.',
-    'At Inter IIT Tech Meet 13.0 our team finished in the national top 10 with fault-tolerant control that recovered a quadrotor from motor failure. Since then I have worked on VTOL systems at PAWAAC Drones, shipped AI products like ReBloom, and built open-source tools such as a Linux video editor that AI agents can drive.',
+    'At Inter IIT Tech Meet 13.0 our team finished in the national top 10 with fault-tolerant control that recovered a quadrotor from motor failure. Since then I have worked on VTOL systems at PAWAAC Drones and gone on to co-found it, shipped AI products like ReBloom, and built open-source tools such as a Linux video editor that AI agents can drive.',
   ],
 
   skillGroups: [
@@ -69,6 +69,13 @@ export const site = {
   ],
 
   timeline: [
+    {
+      title: 'Co-founder',
+      org: 'PAWAAC Drones',
+      period: '2025 – Present',
+      summary:
+        'Co-founded the company after my internship. I build its software, including Pawaac Analyzer for flight-log analysis and the fleet operations platform.',
+    },
     {
       title: 'UAV Engineering Intern',
       org: 'PAWAAC Drones',

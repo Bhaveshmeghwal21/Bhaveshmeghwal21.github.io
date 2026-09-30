@@ -12,6 +12,7 @@ import {
   toProjectSummary,
 } from '../src/lib/content.mjs'
 import { projectFilters, projects } from '../src/content/projects.mjs'
+import { posts } from '../src/content/blog.mjs'
 import { site } from '../src/content/site.mjs'
 
 const publicDir = fileURLToPath(new URL('../public', import.meta.url))
@@ -106,10 +107,29 @@ assert.equal(getNextProject(projects.at(-1).slug).slug, projects[0].slug)
 assert.equal(getNextProject('does-not-exist'), null)
 
 // Writing.
-assert.ok(getFeaturedPosts().length >= 3)
+assert.ok(getFeaturedPosts().length >= 1, 'the homepage needs at least one featured post')
 const postSlugs = getAllPostSlugs()
 assert.equal(new Set(postSlugs).size, postSlugs.length, 'post slugs must be unique')
-assert.equal(getPostBySlug('what-flight-logs-hide').slug, 'what-flight-logs-hide')
+assert.equal(getPostBySlug('what-a-true-leader-should-be').slug, 'what-a-true-leader-should-be')
+for (const post of posts) {
+  if (!post.image) continue
+  assert.ok(post.image.alt && post.image.caption, `${post.slug} image needs alt text and a caption`)
+  assert.match(post.image.credit.href, /^https:\/\//, `${post.slug} image credit must link to its source`)
+  assert.ok(existsSync(`${publicDir}${post.image.src}`), `${post.image.src} does not exist`)
+}
+assert.ok(getPostBySlug('is-ai-really-helping-us').image, 'the Musashi essay has its painting')
+assert.ok(getPostBySlug('what-a-true-leader-should-be').image, 'the leadership post has its photograph')
+for (const post of posts) {
+  for (const section of post.sections) {
+    for (const block of section.paragraphs) {
+      if (typeof block === 'object' && 'quote' in block) {
+        assert.ok(block.quote.trim(), `${post.slug} has an empty quote`)
+        assert.ok(block.cite?.trim(), `${post.slug} has a quote without attribution`)
+        assert.ok(post.note, `${post.slug} quotes a source, so it needs a source note`)
+      }
+    }
+  }
+}
 
 // Site content and assets referenced by the layout.
 assert.equal(site.name, 'Bhavesh Meghwal')
