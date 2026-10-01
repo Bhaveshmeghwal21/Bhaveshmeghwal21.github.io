@@ -1,6 +1,6 @@
 # Bhavesh Meghwal · Portfolio
 
-Personal site at [bhaveshmeghwal21.github.io](https://bhaveshmeghwal21.github.io): projects, writing and contact.
+Personal site at [bhaveshmeghwal.me](https://bhaveshmeghwal.me): projects, writing and contact.
 
 Next.js 14 (pages router, static export), TypeScript and Tailwind CSS. Light and dark themes follow the visitor's system setting.
 
@@ -49,6 +49,8 @@ Visit counts use [GoatCounter](https://www.goatcounter.com) (no cookies). Set `g
 
 ## Custom domain
 
+The site is served at `bhaveshmeghwal.me` (registered at Namecheap; HTTPS enforced, certificate managed by GitHub). To change or re-create the setup:
+
 1. At the registrar, point the domain at GitHub Pages: `A` records for the apex to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and a `CNAME` for `www` to `bhaveshmeghwal21.github.io`.
-2. Set the domain in the repo's Settings → Pages (or `gh api -X PUT repos/Bhaveshmeghwal21/Bhaveshmeghwal21.github.io/pages -f cname=example.com`) and turn on Enforce HTTPS once the certificate is issued. A `CNAME` file isn't needed because the site deploys from Actions.
-3. Change `url` in `site.mjs`, run `npm run cards`, and push. Canonical links, the sitemap, the feed and the social cards all follow `site.url`. The old github.io address redirects to the new domain automatically.
+2. Set the domain in the repo's Settings → Pages (or `gh api -X PUT repos/Bhaveshmeghwal21/Bhaveshmeghwal21.github.io/pages -f cname=example.com`) and turn on Enforce HTTPS once the certificate is issued. Deployments from Actions use this setting; the root `CNAME` file is only a record of it.
+3. Change `url` in `site.mjs`, run `npm run cards`, and push. Canonical links, the sitemap, the feed and the social cards all follow `site.url`. The github.io address redirects to the custom domain automatically.

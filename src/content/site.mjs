@@ -1,7 +1,7 @@
 export const site = {
   name: 'Bhavesh Meghwal',
   role: 'Robotics and software engineer',
-  url: 'https://bhaveshmeghwal21.github.io',
+  url: 'https://bhaveshmeghwal.me',
   profileImage: '/images/profile.jpeg',
   description:
     'Bhavesh Meghwal builds software for drones and AI agents: flight-log analysis, fleet operations, AI products and open-source developer tools.',
