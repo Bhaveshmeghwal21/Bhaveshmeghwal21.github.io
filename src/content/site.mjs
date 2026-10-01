@@ -18,8 +18,8 @@ export const site = {
   resumeRobotics:
     'https://drive.google.com/file/d/1DEYtS6IBMPIo-GRl5vmc44XYJhlwiHR-/view?usp=sharing',
 
-  headline: 'I build software for drones and AI agents.',
-  heroIntro: 'I am an engineer who loves to build complex things and make them work in the real world.',
+  headline: 'I am an engineer.',
+  heroIntro: 'I love to build complex things and make them work in the real world.',
   heroHighlights: [
     'Co-founder, PAWAAC Drones',
     'Shipped Pawaac Analyzer and ReBloom',
