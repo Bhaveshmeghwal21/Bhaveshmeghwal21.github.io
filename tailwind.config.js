@@ -5,6 +5,8 @@
 const token = (name) => `rgb(var(--${name}) / <alpha-value>)`
 
 module.exports = {
+  // dark: classes follow the theme chosen with the nav toggle (see src/lib/theme.ts).
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {

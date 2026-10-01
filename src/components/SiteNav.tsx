@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FiMenu, FiX } from 'react-icons/fi'
+import ThemeToggle from '@/components/ThemeToggle'
 import { site } from '@/content/site.mjs'
 
 export default function SiteNav() {
@@ -29,45 +30,51 @@ export default function SiteNav() {
           {site.name}
         </Link>
 
-        <ul className="hidden items-center gap-1 sm:flex">
-          {site.navItems.map((item) => {
-            const active = isActive(item.href)
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                  className={`rounded-md px-3 py-2 text-sm transition-colors ${
-                    active ? 'text-fg' : 'text-muted hover:text-fg'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            )
-          })}
-          <li className="ml-3">
-            <a
-              href={site.resumeGeneral}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary h-9 px-3.5"
-            >
-              Resume
-            </a>
-          </li>
-        </ul>
+        <div className="flex items-center gap-1">
+          <ul className="hidden items-center gap-1 sm:flex">
+            {site.navItems.map((item) => {
+              const active = isActive(item.href)
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                      active ? 'text-fg' : 'text-muted hover:text-fg'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            })}
+            <li className="ml-3">
+              <a
+                href={site.resumeGeneral}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary h-9 px-3.5"
+              >
+                Resume
+              </a>
+            </li>
+          </ul>
 
-        <button
-          type="button"
-          className="-mr-2 grid h-10 w-10 place-items-center rounded-md text-muted hover:text-fg sm:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <FiX size={20} aria-hidden /> : <FiMenu size={20} aria-hidden />}
-        </button>
+          <div className="sm:ml-2">
+            <ThemeToggle />
+          </div>
+
+          <button
+            type="button"
+            className="-mr-2 grid h-10 w-10 place-items-center rounded-md text-muted hover:text-fg sm:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <FiX size={20} aria-hidden /> : <FiMenu size={20} aria-hidden />}
+          </button>
+        </div>
       </nav>
 
       {open ? (

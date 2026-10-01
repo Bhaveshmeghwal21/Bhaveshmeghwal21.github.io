@@ -2,7 +2,7 @@
 
 Personal site at [bhaveshmeghwal.me](https://bhaveshmeghwal.me): projects, writing and contact.
 
-Next.js 14 (pages router, static export), TypeScript and Tailwind CSS. Light and dark themes follow the visitor's system setting.
+Next.js 14 (pages router, static export), TypeScript and Tailwind CSS. Light and dark themes: the nav toggle sets one and remembers it; until then the site follows the visitor's system setting.
 
 ## Develop
 

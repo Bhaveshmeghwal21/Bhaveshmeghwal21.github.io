@@ -19,8 +19,7 @@ export const site = {
     'https://drive.google.com/file/d/1DEYtS6IBMPIo-GRl5vmc44XYJhlwiHR-/view?usp=sharing',
 
   headline: 'I build software for drones and AI agents.',
-  heroIntro:
-    'Mechanical engineer from IIT (BHU). I build flight-log analysis and fleet tools for drone operators, AI products like ReBloom, and open-source tools that AI agents can drive. My background is in PX4 and fault-tolerant flight control.',
+  heroIntro: 'I am an engineer who loves to build complex things and make them work in the real world.',
   heroHighlights: [
     'Co-founder, PAWAAC Drones',
     'Shipped Pawaac Analyzer and ReBloom',
