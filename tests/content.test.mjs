@@ -140,6 +140,7 @@ assert.equal(site.name, 'Bhavesh Meghwal')
 assert.match(site.url, /^https:\/\//)
 assert.ok(site.description.length <= 160, 'meta description should stay under 160 characters')
 assert.ok(!('phone' in site), 'the phone number is kept off the public site')
+assert.ok(!Object.keys(site).some((key) => /resume/i.test(key)), 'résumé links were removed from the site')
 assert.match(site.goatcounter, /^([a-z0-9-]+)?$/, 'goatcounter is the bare site code, e.g. "bhavesh"')
 for (const asset of ['/images/avatar.jpg', '/images/og-card.png', '/favicon.svg']) {
   assert.ok(existsSync(`${publicDir}${asset}`), `${asset} does not exist`)

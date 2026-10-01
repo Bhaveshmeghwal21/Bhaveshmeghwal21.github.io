@@ -48,16 +48,6 @@ export default function SiteNav() {
                 </li>
               )
             })}
-            <li className="ml-3">
-              <a
-                href={site.resumeGeneral}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary h-9 px-3.5"
-              >
-                Resume
-              </a>
-            </li>
           </ul>
 
           <div className="sm:ml-2">
@@ -91,16 +81,6 @@ export default function SiteNav() {
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                href={site.resumeGeneral}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-md py-2.5 text-[15px] text-muted hover:text-fg"
-              >
-                Resume
-              </a>
-            </li>
           </ul>
         </div>
       ) : null}

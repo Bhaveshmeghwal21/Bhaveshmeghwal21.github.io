@@ -45,15 +45,7 @@ export default function Hero() {
           View my work
           <FiArrowRight aria-hidden />
         </Link>
-        <a
-          href={site.resumeGeneral}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-secondary"
-        >
-          Resume
-        </a>
-        <ul className="-ml-2.5 flex items-center gap-1 sm:ml-1">
+        <ul className="ml-1 flex items-center gap-1">
           {socials.map(({ label, href, icon: Icon }) => (
             <li key={label}>
               <a

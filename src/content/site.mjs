@@ -13,10 +13,6 @@ export const site = {
   githubHandle: 'Bhaveshmeghwal21',
   linkedin: 'https://www.linkedin.com/in/bm-bhavesh-meghwal/',
   linkedinHandle: 'bm-bhavesh-meghwal',
-  resumeGeneral:
-    'https://drive.google.com/file/d/1T2rq8Seq8IW3hFImXbP0tVzEtr30pn0i/view?usp=sharing',
-  resumeRobotics:
-    'https://drive.google.com/file/d/1DEYtS6IBMPIo-GRl5vmc44XYJhlwiHR-/view?usp=sharing',
 
   headline: 'I am an engineer.',
   heroIntro: 'I love to build complex things and make them work in the real world.',
